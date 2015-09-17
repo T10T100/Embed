@@ -1,0 +1,12 @@
+.\objects\fill_add.o: device\GUI\src\Fill_Add.cpp
+.\objects\fill_add.o: .\device\GUI\inc\Fill_Add.h
+.\objects\fill_add.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\fill_add.o: ..\tester_1.03\misc/src/graphic.cpp
+.\objects\fill_add.o: .\misc\inc\graphic.h
+.\objects\fill_add.o: .\misc\inc\geometry.h
+.\objects\fill_add.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+.\objects\fill_add.o: .\memory\inc\memory_alloc.h
+.\objects\fill_add.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\errno.h
+.\objects\fill_add.o: ..\tester_1.03\misc\src\list.cpp
+.\objects\fill_add.o: .\misc\inc\List.h
+.\objects\fill_add.o: .\misc\inc\locker.h

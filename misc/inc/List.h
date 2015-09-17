@@ -21,6 +21,10 @@ template <class T>
 		  List_Iterator &operator + (A &);
 		template <typename A>
 		  List_Iterator &operator + (A *);
+        template <typename A>
+		  List_Iterator &operator + (List_Iterator &);
+		template <typename A>
+		  List_Iterator &operator + (List_Iterator *);
 		template <typename A>
 		  List_Iterator &Array (A &, uint32_t);
 		template <typename A>

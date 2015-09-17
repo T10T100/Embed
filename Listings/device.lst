@@ -33995,6 +33995,10 @@ N		template <typename A>
 N		  List_Iterator &operator + (A &);
 N		template <typename A>
 N		  List_Iterator &operator + (A *);
+N        template <typename A>
+N		  List_Iterator &operator + (List_Iterator &);
+N		template <typename A>
+N		  List_Iterator &operator + (List_Iterator *);
 N		template <typename A>
 N		  List_Iterator &Array (A &, uint32_t);
 N		template <typename A>
@@ -38488,7 +38492,7 @@ N	this->TempFrameDataPackP = this->Screen->GetFrame();
 N	this->TempFrameDataRect  = this->Screen->GetRect();
 N    b2D rect = {0, 0, texture.W, texture.H};
 N	(*TempFrameDataPack)(rect, texture.Image);
-N	(*this->Screen)(rect, *TempFrameDataPack, 0);
+N	(*this->Screen)(rect, *TempFrameDataPack);
 N	
 N	return 0;
 N}
@@ -38497,7 +38501,7 @@ Ntemplate <typename T>
 Nint32_t Bitmap_Class<T>::NewBitmapClose ()
 N{
 N	if (this->Screen->Test()) return -1;
-N	(*this->Screen)(this->TempFrameDataRect, *this->TempFrameDataPackP, 0);
+N	(*this->Screen)(this->TempFrameDataRect, *this->TempFrameDataPackP);
 N	
 N	return 0;
 N}
@@ -38508,7 +38512,7 @@ N{
 N	if (this->Screen->Test()) return -1;
 N	
 N	ColorTypeDef *target = image->Image;
-N	for (uint32_t D = image->W * image->H; D > 0; D--)
+N	for (int32_t D = image->W * image->H; D > 0; D--)
 N	    target[D] = color;
 N	return 0;
 N}
@@ -38522,7 +38526,7 @@ N	uint32_t w = (int32_t)D;
 N	img_dest->W = w;
 N	img_dest->H = w;
 N    
-N  tTexture *texture = this->Screen->MakeTexture((int32_t)D, (int32_t)D);
+N    tTexture *texture = this->Screen->MakeTexture((int32_t)D, (int32_t)D);
 N	
 N	this->Fill(img_dest, StdColWhite);
 N	this->Copy(img_dest, img_src, color);
@@ -39238,10 +39242,13 @@ N	  int32_t Refresh ();
 N	  tTexture *MakeTexture (b2D);
 N	  tTexture *MakeTexture (gbasic_t, gbasic_t);
 N	  int32_t   KillTexture (tTexture *);
+N    
+N      int32_t Pixel (gbasic_t, gbasic_t, ColorTypeDef);
+N      ColorTypeDef Pixel (gbasic_t, gbasic_t);
 N	  
 N	  Affine_Body Affine;
 N	
-N    Fill_Class       <Screen> Fill;
+N      Fill_Class       <Screen> Fill;
 N	  Bitmap_Class     <Screen> Bitmap;
 N	  Circle_Class     <Screen> Circle;
 N	  Line_Class       <Screen> Line;
@@ -39251,6 +39258,8 @@ N	  Frame2D<gbasic_t> *GetFrame ();
 N	private:
 N	  Frame2D<gbasic_t> *Frame;
 N	  ColorTypeDef back_color;
+N      ColorTypeDef *frame_;
+N      ColorTypeDef h_;
 N	
 N	  friend class Bitmap_Class     <Screen>;
 N	  friend class Fill_Class       <Screen>;

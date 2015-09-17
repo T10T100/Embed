@@ -1,6 +1,7 @@
 #ifndef PHYSIC_H
 #define PHYSIC_H
 #include <stdint.h>
+#include <stdlib.h>
 #include <math.h>
 #include "geometry.h"
 #include "misc/src/list.cpp"
@@ -58,9 +59,44 @@ namespace Physic {
           virtual void Draw (f2P, float, uint32_t);
     };
     
-	
-
+    
+    struct DustPart : public List_Node <DustPart, float> {
+        float x, y;
+        float vx, vy, v;
+        float a;
+    };
+    
+    
+    class StarDust : public Allocator <DustPart> {
+        public:
+            StarDust ();
+            ~StarDust ();
+            void operator () ();
+            void SetUp (DustPart *, uint32_t);
+            void Add (float);
+            void Add (uint32_t);
+            void Remove (uint32_t);
+            void Step (b2D);
+            int32_t Test (DustPart &, DustPart &);
+            void Draw ();
+        private:
+            int32_t TestAround (DustPart &);
+            uint32_t ReadPixel (float, float);
+            int32_t Draw (float, float, uint32_t);
+            List_Iterator<DustPart> parts_[2];
+            uint8_t index_;
+            DustPart *edust_;
+            uint32_t eq_;
+    };
+    
+    
+    
+    
 };
+
+
+
+
 
 
 

@@ -34974,6 +34974,10 @@ N		template <typename A>
 N		  List_Iterator &operator + (A &);
 N		template <typename A>
 N		  List_Iterator &operator + (A *);
+N        template <typename A>
+N		  List_Iterator &operator + (List_Iterator &);
+N		template <typename A>
+N		  List_Iterator &operator + (List_Iterator *);
 N		template <typename A>
 N		  List_Iterator &Array (A &, uint32_t);
 N		template <typename A>
@@ -39467,7 +39471,7 @@ N	this->TempFrameDataPackP = this->Screen->GetFrame();
 N	this->TempFrameDataRect  = this->Screen->GetRect();
 N    b2D rect = {0, 0, texture.W, texture.H};
 N	(*TempFrameDataPack)(rect, texture.Image);
-N	(*this->Screen)(rect, *TempFrameDataPack, 0);
+N	(*this->Screen)(rect, *TempFrameDataPack);
 N	
 N	return 0;
 N}
@@ -39476,7 +39480,7 @@ Ntemplate <typename T>
 Nint32_t Bitmap_Class<T>::NewBitmapClose ()
 N{
 N	if (this->Screen->Test()) return -1;
-N	(*this->Screen)(this->TempFrameDataRect, *this->TempFrameDataPackP, 0);
+N	(*this->Screen)(this->TempFrameDataRect, *this->TempFrameDataPackP);
 N	
 N	return 0;
 N}
@@ -39487,7 +39491,7 @@ N{
 N	if (this->Screen->Test()) return -1;
 N	
 N	ColorTypeDef *target = image->Image;
-N	for (uint32_t D = image->W * image->H; D > 0; D--)
+N	for (int32_t D = image->W * image->H; D > 0; D--)
 N	    target[D] = color;
 N	return 0;
 N}
@@ -39501,7 +39505,7 @@ N	uint32_t w = (int32_t)D;
 N	img_dest->W = w;
 N	img_dest->H = w;
 N    
-N  tTexture *texture = this->Screen->MakeTexture((int32_t)D, (int32_t)D);
+N    tTexture *texture = this->Screen->MakeTexture((int32_t)D, (int32_t)D);
 N	
 N	this->Fill(img_dest, StdColWhite);
 N	this->Copy(img_dest, img_src, color);
@@ -40217,10 +40221,13 @@ N	  int32_t Refresh ();
 N	  tTexture *MakeTexture (b2D);
 N	  tTexture *MakeTexture (gbasic_t, gbasic_t);
 N	  int32_t   KillTexture (tTexture *);
+N    
+N      int32_t Pixel (gbasic_t, gbasic_t, ColorTypeDef);
+N      ColorTypeDef Pixel (gbasic_t, gbasic_t);
 N	  
 N	  Affine_Body Affine;
 N	
-N    Fill_Class       <Screen> Fill;
+N      Fill_Class       <Screen> Fill;
 N	  Bitmap_Class     <Screen> Bitmap;
 N	  Circle_Class     <Screen> Circle;
 N	  Line_Class       <Screen> Line;
@@ -40230,6 +40237,8 @@ N	  Frame2D<gbasic_t> *GetFrame ();
 N	private:
 N	  Frame2D<gbasic_t> *Frame;
 N	  ColorTypeDef back_color;
+N      ColorTypeDef *frame_;
+N      ColorTypeDef h_;
 N	
 N	  friend class Bitmap_Class     <Screen>;
 N	  friend class Fill_Class       <Screen>;
@@ -43193,6 +43202,7 @@ L 1 ".\misc\inc\physic.h" 1
 N#ifndef PHYSIC_H
 N#define PHYSIC_H
 N#include <stdint.h>
+N#include <stdlib.h>
 N#include <math.h>
 N#include "geometry.h"
 N#include "misc/src/list.cpp"
@@ -43365,7 +43375,7 @@ N#endif /*ARRAY_H*/
 N
 N/*End Of File*/
 N
-L 9 ".\misc\inc\physic.h" 2
+L 10 ".\misc\inc\physic.h" 2
 N
 Nnamespace Physic {
 N	
@@ -43418,9 +43428,44 @@ N          List_Iterator<Ball2D> Balls;
 N          virtual void Draw (f2P, float, uint32_t);
 N    };
 N    
-N	
-N
+N    
+N    struct DustPart : public List_Node <DustPart, float> {
+N        float x, y;
+N        float vx, vy, v;
+N        float a;
+N    };
+N    
+N    
+N    class StarDust : public Allocator <DustPart> {
+N        public:
+N            StarDust ();
+N            ~StarDust ();
+N            void operator () ();
+N            void SetUp (DustPart *, uint32_t);
+N            void Add (float);
+N            void Add (uint32_t);
+N            void Remove (uint32_t);
+N            void Step (b2D);
+N            int32_t Test (DustPart &, DustPart &);
+N            void Draw ();
+N        private:
+N            int32_t TestAround (DustPart &);
+N            uint32_t ReadPixel (float, float);
+N            int32_t Draw (float, float, uint32_t);
+N            List_Iterator<DustPart> parts_[2];
+N            uint8_t index_;
+N            DustPart *edust_;
+N            uint32_t eq_;
+N    };
+N    
+N    
+N    
+N    
 N};
+N
+N
+N
+N
 N
 N
 N
@@ -43438,13 +43483,6 @@ N
 N
 Nuint16_t color = 0;
 NFrame2D<gbasic_t> *frame;
-NColorTypeDef Tex0[100 * 100 * sizeof(ColorTypeDef)];
-NColorTypeDef Tex1[100 * 100 * sizeof(ColorTypeDef)];
-NtTexture tex0 = {Tex0, 100, 100};
-NtTexture tex1 = {Tex1, 100, 100};
-NtTexture tex_case[2] = {tex0, tex1};
-NtTexture *Texture_Temp0 = (tTexture *)0, *Texture_Bg0 = (tTexture *)0;
-N
 N
 NBounce bounce_0, bounce_1;
 NBounce bounce_2, bounce_3;
@@ -43452,6 +43490,8 @@ NBounce bounce_4, bounce_5;
 NBall2D ball_0;
 NScreen *screen;
 NBall2DGroup BallGr;
+NStarDust dust;
+NDustPart parts[1001];
 Nint main ()
 N{
 N	HAL_Init();
@@ -43487,51 +43527,69 @@ N	rect.w = 100;
 N	rect.x = 100;
 N	rect.y = 50;
 N	float A = 0;//(float *)Heap.New(4);
-N	b2D rect0 = {0, 0, 450, 450};
+N	b2D rect0 = {0, 0, 160, 160};
 N	uint8_t counter = 0, c = 0;
-N	Texture_Temp0->W = 100;
-N	Texture_Temp0->H = 100;
 N	b2D r= {0, 0, 100, 100};
 N	rect.h = 100;
 N    rect.w = 100;
 N    rect.x = 100;
 N	rect.y = 50;
-N	b2D rot = {0, 120, 200, 200};
-N
-N    
+N	b2D rot = {0, 0, 200, 200};
+N    tTexture *tex1;
+N    tex1 = screen->MakeTexture(rot);
+N    tTexture *tex2;
+N    tex2 = screen->MakeTexture(rot);
 N    f2P point = {0.0F, 0.0F};
 N    BallGr(rect0, 15.0F, 10.0F);
 N    BallGr.Add(2);
-N		for (uint32_t i = 120; i > 0; i--) {
-N			  BallGr.Add(float(rand() % 30) + 10, (float)counter / 8 + 40, float(counter++) / 100);
-N		}
+N    float a = 1.0F;
+N	dust.SetUp(parts, 500);
 N	while (1) {	
-N          screen->Fill.Fill(0x1111);
+N          screen->Fill.Fill(0x0000);
+N          dust.Step(rect0);
+N          screen->Bitmap.Fill(tex1);
+N          screen->Bitmap.NewBitmapOpen(*tex1);
+N              dust.Draw();
+N              screen->Rectangle.Draw(rect0, 0xaa00);
+N          screen->Bitmap.NewBitmapClose();
+N          //screen->Bitmap.Rotate(tex2, tex1, a);
+N          screen->Bitmap.SetScale(3, 2);
+N          screen->Bitmap.Draw(0, 0, tex1);
 N		      //screen->Bitmap.Draw(0, 0, &Wall0);
 N		      //screen->Bitmap.SetScale(0, 0);
-N		      screen->Print.String(Heap.PrintTable());
-N          BallGr.Step();
-N          BallGr.Draw();
-N          screen->Rectangle.Draw(rect0, 0xaa00);
-N		if (counter++ % 200 == 0) {
-N			BallGr.Add(40, 0, 1.3F);
-N		}
+N		      //screen->Print.String(Heap.PrintTable());
+N          //BallGr.Step();
+N          //BallGr.Draw();
+N          
+N          
 N      //LcdDrvRect.y = counter++ % 190;
 N		  
 N		  TFT.Fill(*frame, LcdDrvRect);
 N	}
-W "user\src\main.cpp" 104 3 statement is unreachable
+W "user\src\main.cpp" 105 3 statement is unreachable
 N  return 0;
-W "user\src\main.cpp" 70 8 variable "A" was declared but never referenced
-W "user\src\main.cpp" 72 23 variable "c" was declared but never referenced
-W "user\src\main.cpp" 75 6 variable "r" was declared but never referenced
-W "user\src\main.cpp" 80 6 variable "rot" was declared but never referenced
-W "user\src\main.cpp" 83 9 variable "point" was declared but never referenced
+W "user\src\main.cpp" 65 8 variable "A" was declared but never referenced
+W "user\src\main.cpp" 67 10 variable "counter" was declared but never referenced
+W "user\src\main.cpp" 67 23 variable "c" was declared but never referenced
+W "user\src\main.cpp" 68 6 variable "r" was declared but never referenced
+W "user\src\main.cpp" 76 15 variable "tex2" was set but never used
+W "user\src\main.cpp" 78 9 variable "point" was declared but never referenced
+W "user\src\main.cpp" 81 11 variable "a" was declared but never referenced
 N}
 N
 Nvoid Ball2DGroup::Draw (f2P p, float R, uint32_t color)
 N{
 N    screen->Circle.Draw(p.x, p.y, R / 2, color);
 N	  //screen->Rectangle.Draw(r, color);
+N}
+N
+Nint32_t StarDust::Draw (float x, float y, uint32_t color)
+N{
+N    return screen->Pixel(x, y, color);
+N}
+N
+Nuint32_t StarDust::ReadPixel (float x, float y)
+N{
+N    return screen->Pixel(x, y);
 N}
 N

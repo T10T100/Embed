@@ -1,6 +1,7 @@
 .\objects\physic.o: misc\src\physic.cpp
 .\objects\physic.o: .\misc\inc\physic.h
 .\objects\physic.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\physic.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\objects\physic.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 .\objects\physic.o: .\misc\inc\geometry.h
 .\objects\physic.o: ..\tester_1.03\misc/src/list.cpp

@@ -29,10 +29,13 @@ class Screen : public Locker ,
 	  tTexture *MakeTexture (b2D);
 	  tTexture *MakeTexture (gbasic_t, gbasic_t);
 	  int32_t   KillTexture (tTexture *);
+    
+      int32_t Pixel (gbasic_t, gbasic_t, ColorTypeDef);
+      ColorTypeDef Pixel (gbasic_t, gbasic_t);
 	  
 	  Affine_Body Affine;
 	
-    Fill_Class       <Screen> Fill;
+      Fill_Class       <Screen> Fill;
 	  Bitmap_Class     <Screen> Bitmap;
 	  Circle_Class     <Screen> Circle;
 	  Line_Class       <Screen> Line;
@@ -42,6 +45,8 @@ class Screen : public Locker ,
 	private:
 	  Frame2D<gbasic_t> *Frame;
 	  ColorTypeDef back_color;
+      ColorTypeDef *frame_;
+      ColorTypeDef h_;
 	
 	  friend class Bitmap_Class     <Screen>;
 	  friend class Fill_Class       <Screen>;

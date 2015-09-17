@@ -335,5 +335,169 @@ void Ball2DGroup::Draw ()
     }    
 }
 
+
+
+
+
+
+
+
+
+
+
+
+StarDust::StarDust () {}
+StarDust::~StarDust () {}
+
+void StarDust::operator () ()
+{
+    this->index_ = 0;
+}
+
+void StarDust::Step (b2D r)
+{
+    DustPart *npart;
+    DustPart *part;
+    DustPart tpart;
+    int32_t q = eq_, t = eq_;
+    int32_t moved = 0;
+    while (q--) {
+        part = &edust_[q];
+        
+        part->x = part->x + part->vx;
+        part->y = part->y + part->vy;
+        if (part->x < 1) {
+           part->vx = -part->vx; 
+           part->x = 1;
+        } else if (part->x > r.w) {
+           part->vx = -part->vx; 
+           part->x = r.h - 1;
+        } else if (part->y < 1) {
+           part->vy = -part->vy;
+           part->y = 1;            
+        } else if (part->y > r.h) {
+           part->vy = -part->vy; 
+           part->y = r.h - 1;
+        } else {}
+        
+        t = 0;
+        npart = &edust_[0];
+        while (t < q) {
+            
+            
+            if (this->Test(*part, *npart)/* || this->TestAround(*npart)*/) {
+                moved++;
+                tpart = edust_[q];
+                edust_[q] = edust_[t];
+                edust_[t] = tpart;
+                q--;
+            } else {
+                
+            }
+            npart = &edust_[++t];
+        }        
+    } 
+}
+
+int32_t StarDust::TestAround (DustPart &p)
+{
+    float x = p.x;
+    float y = p.y;
+    if (this->ReadPixel(x, y)) {
+        return 1;
+    } else     if (this->ReadPixel(x + 1, y)) {
+        return 1;
+    } else     if (this->ReadPixel(x - 1, y)) {
+        return 1;
+    } else     if (this->ReadPixel(x, y + 1)) {
+        return 1;
+    } else     if (this->ReadPixel(x, y - 1)) {
+        return 1;
+    } else     if (this->ReadPixel(x + 1, y + 1)) {
+        return 1;
+    } else     if (this->ReadPixel(x - 1, y - 1)) {
+        return 1;
+    } else     if (this->ReadPixel(x + 1, y - 1)) {
+        return 1;
+    } else     if (this->ReadPixel(x - 1, y + 1)) {
+        return 1;
+    } else {}
+    return 0;        
+}
+
+int32_t StarDust::Test (DustPart &p, DustPart &n)
+{
+    float a, vx, vy;
+    if (((uint32_t)p.x == (uint32_t)n.x) && ((uint32_t)p.y == (uint32_t)n.y)) {
+        a = p.a;
+        vx = p.vx;
+        vy = p.vy;
+        p.a = n.a;
+        p.vx = n.vx;
+        p.vy = n.vy;
+        n.a = a;
+        n.vx = vx;
+        n.vy = vy;
+        return 1;
+    }
+    return 0;
+}
+
+void StarDust::Add (float a)
+{
+    DustPart *part = this->New();
+    if (! part) {
+        return; 
+    } else {}
+    part->x = 1;
+    part->y = 1;    
+    part->v = 1.0F;
+    part->a = a;
+    part->vx = 1.0F * sin(part->a);
+    part->vy = 1.0F * cos(part->a);
+    this->parts_[index_] + part;
+}
+
+void StarDust::Add (uint32_t)
+{
+    
+}
+
+void StarDust::SetUp (DustPart *dust, uint32_t q)
+{
+    float a = 0.1F;
+    this->eq_ = q;
+    this->edust_ = dust;
+    while (q--) {
+       dust[q].x = 1;
+       dust[q].y = 1;    
+       dust[q].v = 1.0F;
+       dust[q].a = a;
+       dust[q].vx = 1.0F * sin(a);
+       dust[q].vy = 1.0F * cos(a); 
+       a += 0.00628;
+    }
+}
+
+void StarDust::Remove (uint32_t)
+{
+    
+}
+
+void StarDust::Draw ()
+{
+    
+    DustPart part = edust_[0];
+    uint32_t t = eq_;
+    while (t--) {
+        this->Draw (part.x, part.y, part.x * part.y);
+        part = edust_[t];
+    }
+   
+}
+    
+
+    
+
 /*End Of File*/
 	

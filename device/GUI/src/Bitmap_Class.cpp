@@ -586,7 +586,7 @@ int32_t Bitmap_Class<T>::NewBitmapOpen (tTexture &texture)
 	this->TempFrameDataRect  = this->Screen->GetRect();
     b2D rect = {0, 0, texture.W, texture.H};
 	(*TempFrameDataPack)(rect, texture.Image);
-	(*this->Screen)(rect, *TempFrameDataPack, 0);
+	(*this->Screen)(rect, *TempFrameDataPack);
 	
 	return 0;
 }
@@ -595,7 +595,7 @@ template <typename T>
 int32_t Bitmap_Class<T>::NewBitmapClose ()
 {
 	if (this->Screen->Test()) return -1;
-	(*this->Screen)(this->TempFrameDataRect, *this->TempFrameDataPackP, 0);
+	(*this->Screen)(this->TempFrameDataRect, *this->TempFrameDataPackP);
 	
 	return 0;
 }
@@ -606,7 +606,7 @@ int32_t Bitmap_Class<T>::Fill (img_t *image, ColorTypeDef color)
 	if (this->Screen->Test()) return -1;
 	
 	ColorTypeDef *target = image->Image;
-	for (uint32_t D = image->W * image->H; D > 0; D--)
+	for (int32_t D = image->W * image->H; D > 0; D--)
 	    target[D] = color;
 	return 0;
 }
@@ -619,7 +619,7 @@ img_d *Bitmap_Class<T>::Rotate (img_d *img_dest, img_t *img_src, float A, ColorT
 	img_dest->W = w;
 	img_dest->H = w;
     
-  tTexture *texture = this->Screen->MakeTexture((int32_t)D, (int32_t)D);
+    tTexture *texture = this->Screen->MakeTexture((int32_t)D, (int32_t)D);
 	
 	this->Fill(img_dest, StdColWhite);
 	this->Copy(img_dest, img_src, color);

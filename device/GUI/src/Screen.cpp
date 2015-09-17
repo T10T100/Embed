@@ -18,6 +18,20 @@ void Screen::operator () (b2D rect, Frame2D<gbasic_t> &frame)
 	      this->Rectangle.Init();
 	this->Print(*this);
 	      this->Print.Init();
+    
+    this->frame_ = this->Frame->GetBuff();
+    this->h_     = this->Frame->GetH();
+}
+
+int32_t Screen::Pixel (gbasic_t x, gbasic_t y, ColorTypeDef color)
+{
+  *(frame_ + (y + Y0) + (x + X0) * h_) = color;
+  return 0;    
+}
+
+ColorTypeDef Screen::Pixel (gbasic_t x, gbasic_t y)
+{
+  return *(frame_ + (y + Y0) + (x + X0) * h_);    
 }
 
 int32_t Screen::Refresh ()
@@ -32,7 +46,7 @@ Frame2D<gbasic_t> *Screen::GetFrame ()
 
 tTexture *Screen::MakeTexture (gbasic_t w, gbasic_t h)
 {
-  tTexture *texture = this->New<tTexture>((w + 1) * (h + 1) * sizeof(ColorTypeDef));
+    tTexture *texture = this->New<tTexture>((w + 1) * (h + 1) * sizeof(ColorTypeDef));
 	texture->Image = (ColorTypeDef *)(texture + 1);
 	texture->W = w;
 	texture->H = h;

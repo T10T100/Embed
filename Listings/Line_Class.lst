@@ -2098,6 +2098,10 @@ N		template <typename A>
 N		  List_Iterator &operator + (A &);
 N		template <typename A>
 N		  List_Iterator &operator + (A *);
+N        template <typename A>
+N		  List_Iterator &operator + (List_Iterator &);
+N		template <typename A>
+N		  List_Iterator &operator + (List_Iterator *);
 N		template <typename A>
 N		  List_Iterator &Array (A &, uint32_t);
 N		template <typename A>

@@ -459,7 +459,7 @@ typedef unsigned short resolution_t;
 #endif
 #include <stdint.h>
 #include "gpio_ex.h"
-#include "device/GUI/src/Frame_Class.cpp"
+#include "frame_class.h"
 #include "geometry.h"
 #include "Memory_alloc.h"
 

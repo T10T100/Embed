@@ -519,46 +519,6 @@
               <FilePath>.\device\GUI\src\Screen.cpp</FilePath>
             </File>
             <File>
-              <FileName>Bitmap_Class.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\device\GUI\src\Bitmap_Class.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>Circle_Class.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\device\GUI\src\Circle_Class.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>Line_Class.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\device\GUI\src\Line_Class.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>Fill_Class.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\device\GUI\src\Fill_Class.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>Frame_Class.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\device\GUI\src\Frame_Class.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>Screen_obj.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\device\GUI\src\Screen_obj.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>Rectangle_Class.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\device\GUI\src\Rectangle_Class.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>Print_Class.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\device\GUI\src\Print_Class.cpp</FilePath>
-            </File>
-            <File>
               <FileName>Terminal_interface.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\device\GUI\src\Terminal_interface.cpp</FilePath>
@@ -602,11 +562,6 @@
           <GroupName>misc</GroupName>
           <Files>
             <File>
-              <FileName>List.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\misc\src\List.cpp</FilePath>
-            </File>
-            <File>
               <FileName>geometry.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\misc\src\geometry.cpp</FilePath>
@@ -640,11 +595,6 @@
               <FileName>memory_alloc.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\memory\src\memory_alloc.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>memory_template.cc</FileName>
-              <FileType>0</FileType>
-              <FilePath>.\memory\src\memory_template.cc</FilePath>
             </File>
           </Files>
         </Group>

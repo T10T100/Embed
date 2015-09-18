@@ -1,13 +1,10 @@
 .\objects\fill_class.o: device\GUI\src\Fill_Class.cpp
 .\objects\fill_class.o: .\device\GUI\inc\Fill_Class.h
-.\objects\fill_class.o: ..\tester_1.03\device/GUI/src/Frame_Class.cpp
-.\objects\fill_class.o: .\device\GUI\inc\Frame_Class.h
+.\objects\fill_class.o: .\device\GUI\inc\frame_class.h
 .\objects\fill_class.o: .\device\GUI\inc\GUI_defs.h
 .\objects\fill_class.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\fill_class.o: .\misc\inc\geometry.h
 .\objects\fill_class.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 .\objects\fill_class.o: .\memory\inc\memory_template.h
-.\objects\fill_class.o: ..\tester_1.03\misc/src/List.cpp
 .\objects\fill_class.o: .\misc\inc\List.h
-.\objects\fill_class.o: ..\tester_1.03\device/GUI/src/Screen_obj.cpp
-.\objects\fill_class.o: .\device\GUI\inc\Screen_obj.h
+.\objects\fill_class.o: .\device\GUI\inc\screen_obj.h

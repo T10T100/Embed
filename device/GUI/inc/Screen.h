@@ -3,24 +3,24 @@
 
 #include <stdint.h>
 #include "memory_template.h"
-#include "device/GUI/src/Frame_Class.cpp"
-#include "misc/src/list.cpp"
+#include "Frame_Class.h"
+#include "list.h"
 #include "geometry.h"
 #include "locker.h"
 
 #include "affine_tf.h"
 
-#include "device/GUI/src/Screen_Obj.cpp"
-#include "device/GUI/src/Fill_Class.cpp"
-#include "device/GUI/src/Bitmap_Class.cpp"
-#include "device/GUI/src/Circle_Class.cpp"
-#include "device/GUI/src/Line_Class.cpp"
-#include "device/GUI/src/Rectangle_Class.cpp"
-#include "device/GUI/src/Print_Class.cpp"
+#include "screen_obj.h"
+#include "fill_class.h"
+#include "bitmap_class.h"
+#include "circle_class.h"
+#include "line_class.h"
+#include "rectangle_class.h"
+#include "print_class.h"
 
 class Screen : public Locker ,
-	           public Coordinates,		  
-		       public List_Node <Screen, uint8_t>,
+	             public Coordinates,		  
+		           public List_Node <Screen, uint8_t>,
                public Allocator <Screen>				 {
 	public:
 	  Screen ();

@@ -33964,15 +33964,10 @@ N
 N/* end of errno.h */
 N
 L 6 ".\memory\inc\memory_alloc.h" 2
-N#include "misc\src\list.cpp"
-L 1 "..\tester_1.03\misc\src\list.cpp" 1
-N
-N#ifndef __LIST
-N#define __LIST
-N
 N#include "List.h"
 L 1 ".\misc\inc\List.h" 1
-N
+N#ifndef __LIST
+N#define __LIST
 N#include <stdint.h>
 N
 Ntemplate <class T, typename K>
@@ -34020,9 +34015,6 @@ N	  private:
 N		  T *First, *Last;
 N	    uint32_t Elements;
 N  };
-N
-L 6 "..\tester_1.03\misc\src\list.cpp" 2
-N
 N
 Ntemplate <class T>
 NList_Iterator<T>::List_Iterator()
@@ -37052,13 +37044,11 @@ N*/
 N#endif
 N#include <stdint.h>
 N#include "gpio_ex.h"
-N#include "device/GUI/src/Frame_Class.cpp"
-L 1 "..\tester_1.03\device/GUI/src/Frame_Class.cpp" 1
-N#ifndef FRAME_CLASS_CPP
-N#define FRAME_CLASS_CPP
+N#include "frame_class.h"
+L 1 ".\device\GUI\inc\frame_class.h" 1
+N#ifndef FRAME_CLASS_H
+N#define FRAME_CLASS_H
 N
-N#include "Frame_Class.h"
-L 1 ".\device\GUI\inc\Frame_Class.h" 1
 N#include "GUI_defs.h"
 L 1 ".\device\GUI\inc\GUI_defs.h" 1
 N
@@ -37142,7 +37132,7 @@ N
 N
 N
 N#endif /*GUI_DEFS_H*/
-L 2 ".\device\GUI\inc\Frame_Class.h" 2
+L 5 ".\device\GUI\inc\frame_class.h" 2
 N#include "geometry.h"
 L 1 ".\misc\inc\geometry.h" 1
 N
@@ -37222,9 +37212,9 @@ N#endif
 N
 N
 N
-L 3 ".\device\GUI\inc\Frame_Class.h" 2
+L 6 ".\device\GUI\inc\frame_class.h" 2
 N#include "memory_template.h"
-N#include "misc/src/List.cpp"
+N#include "List.h"
 N
 Ntemplate <typename T>
 Nstruct frame_data_t {
@@ -37263,12 +37253,7 @@ N	  Frame2D<T> *Create (b2D);
 N	  Frame2D<T> *Access (uint32_t);
 N	private:
 N};
-N
-N
-N/*End Of File*/
-L 5 "..\tester_1.03\device/GUI/src/Frame_Class.cpp" 2
-N
-N
+N												 
 Ntemplate <typename T>
 NFrame2D<T>::Frame2D (){}
 N
@@ -37360,8 +37345,11 @@ N{
 N	Frame2D<T> *frame = this->Get(id);
 N	return frame;
 N}
-N#endif /*FRAME_CLASS_CPP*/
+N#endif /*FRAME_CLASS_H*/
 N
+N
+N
+N/*End Of File*/
 L 463 ".\device\hardware\inc\TFTili9486.h" 2
 N#include "geometry.h"
 N#include "Memory_alloc.h"
@@ -37426,8 +37414,8 @@ N#define SCREEN_H
 N
 N#include <stdint.h>
 N#include "memory_template.h"
-N#include "device/GUI/src/Frame_Class.cpp"
-N#include "misc/src/list.cpp"
+N#include "Frame_Class.h"
+N#include "list.h"
 N#include "geometry.h"
 N#include "locker.h"
 N
@@ -37459,14 +37447,13 @@ N/*End Of File*/
 N
 L 12 ".\device\GUI\inc\screen.h" 2
 N
-N#include "device/GUI/src/Screen_Obj.cpp"
-L 1 "..\tester_1.03\device/GUI/src/Screen_Obj.cpp" 1
+N#include "screen_obj.h"
+L 1 ".\device\GUI\inc\screen_obj.h" 1
 N#ifndef SCREEN_OBJ_CPP
 N#define SCREEN_OBJ_CPP
-N#include "Screen_obj.h"
-L 1 ".\device\GUI\inc\Screen_obj.h" 1
+N
 N#include <stdint.h>
-N#include "device/GUI/src/Frame_Class.cpp"
+N#include "frame_class.h"
 N
 Ntemplate <typename T>
 Nclass Screen_Obj {
@@ -37479,8 +37466,6 @@ N	  ColorTypeDef *Frame;
 N	  uint32_t H;
 N};
 N
-N/*End Of File*/
-L 4 "..\tester_1.03\device/GUI/src/Screen_Obj.cpp" 2
 N
 Ntemplate <typename T>
 NScreen_Obj<T>::Screen_Obj () {}
@@ -37499,17 +37484,15 @@ N#endif /*SCREEN_OBJ_CPP*/
 N
 N/*End Of File*/
 L 14 ".\device\GUI\inc\screen.h" 2
-N#include "device/GUI/src/Fill_Class.cpp"
-L 1 "..\tester_1.03\device/GUI/src/Fill_Class.cpp" 1
+N#include "fill_class.h"
+L 1 ".\device\GUI\inc\fill_class.h" 1
 N#ifndef FILL_CLASS_CPP
 N#define FILL_CLASS_CPP
 N
 N#ifdef SOFTWARE_GL
 N
-N#include "Fill_Class.h"
-L 1 ".\device\GUI\inc\Fill_Class.h" 1
-N#include "device/GUI/src/Frame_Class.cpp"
-N#include "device/GUI/src/Screen_obj.cpp"
+N#include "frame_class.h"
+N#include "screen_obj.h"
 N
 N#ifndef GUI_FILL_TRIG_JITTER
 N#define GUI_FILL_TRIG_JITTER 3
@@ -37529,8 +37512,6 @@ N	protected:
 N	  friend class Screen; 
 N};
 N
-N
-L 7 "..\tester_1.03\device/GUI/src/Fill_Class.cpp" 2
 N
 Ntemplate <typename T>
 NFill_Class<T>::Fill_Class (){}
@@ -37639,31 +37620,27 @@ N#endif /*SOFTWARE_GL*/
 N
 N
 N#endif /*FILL_CLASS_CPP*/
-N
 L 15 ".\device\GUI\inc\screen.h" 2
-N#include "device/GUI/src/Bitmap_Class.cpp"
-L 1 "..\tester_1.03\device/GUI/src/Bitmap_Class.cpp" 1
-N#ifndef BITMAP_CLASS_CPP
-N#define BITMAP_CLASS_CPP
+N#include "bitmap_class.h"
+L 1 ".\device\GUI\inc\bitmap_class.h" 1
+N#ifndef BITMAP_CLASS_H
+N#define BITMAP_CLASS_H
 N
 N#ifdef SOFTWARE_GL
 N
-N#include "bitmap_class.h"
-L 1 ".\device\GUI\inc\bitmap_class.h" 1
 N#include <stdint.h>
-N#include "device/GUI/src/Frame_Class.cpp"
-N#include "device/GUI/src/Screen_obj.cpp"
-N#include "device/GUI/src/Print_Class.cpp"
-L 1 "..\tester_1.03\device/GUI/src/Print_Class.cpp" 1
-N#ifndef PRINT_CLASS_CPP
-N#define PRINT_CLASS_CPP
-N#include "Print_Class.h"
-L 1 ".\device\GUI\inc\Print_Class.h" 1
+N#include "Frame_Class.h"
+N#include "screen_obj.h"
+N#include "print_class.h"
+L 1 ".\device\GUI\inc\print_class.h" 1
+N#ifndef PRINT_CLASS_H
+N#define PRINT_CLASS_H
+N
 N#include <stdint.h>
 N#include "String_Defs.h"
-N#include "device/GUI/src/Frame_Class.cpp"
-N#include "device/GUI/src/Screen_obj.cpp"
-N#include "misc/src/List.cpp"
+N#include "Frame_Class.h"
+N#include "screen_obj.h"
+N#include "list.h"
 N
 Nenum FormatEnum{
 N	StrFormatTabOnly      = 0,
@@ -37698,8 +37675,6 @@ N	  gbasic_t FontW, FontH;
 N	  const tFont *Font;
 N	  uint8_t Format;
 N};
-N
-L 4 "..\tester_1.03\device/GUI/src/Print_Class.cpp" 2
 N
 Ntemplate <typename T>
 NPrint_Class<T>::Print_Class() {}
@@ -37811,9 +37786,7 @@ N
 N
 N#endif /*PRINT_CLASS_CPP*/
 N
-N/*End Of File*/
-N
-L 5 ".\device\GUI\inc\bitmap_class.h" 2
+L 10 ".\device\GUI\inc\bitmap_class.h" 2
 N
 N
 Ntemplate <typename T> 
@@ -37905,8 +37878,7 @@ N
 N		
 N	friend class Print_Class<T>;
 N};
-N
-L 7 "..\tester_1.03\device/GUI/src/Bitmap_Class.cpp" 2
+N	
 N
 Ntemplate <typename T>
 NBitmap_Class<T>::Bitmap_Class ()
@@ -38055,7 +38027,7 @@ N				dest[xi - (int32_t)(j) * w + C] = src[xi];
 N		}
 N	}
 N	return dest;
-W "..\tester_1.03\device/GUI/src/Bitmap_Class.cpp" 146 10 variable "W" was declared but never referenced
+W ".\device\GUI\inc\bitmap_class.h" 241 10 variable "W" was declared but never referenced
 N}
 N
 Ntemplate <typename T> template <typename dest_t, typename src_t>
@@ -38611,20 +38583,18 @@ N#else /*!SOFTWARE_GL*/
 S
 N#endif /*SOFTWARE_GL*/
 N
-N#endif /*BITMAP_CLASS_CPP*/
+N#endif /*BITMAP_CLASS_H*/
 N
 L 16 ".\device\GUI\inc\screen.h" 2
-N#include "device/GUI/src/Circle_Class.cpp"
-L 1 "..\tester_1.03\device/GUI/src/Circle_Class.cpp" 1
+N#include "circle_class.h"
+L 1 ".\device\GUI\inc\circle_class.h" 1
 N#ifndef CIRCLE_CLASS_CPP
 N#define CIRCLE_CLASS_CPP
 N
 N#ifdef SOFTWARE_GL
 N
-N#include "Circle_Class.h"
-L 1 ".\device\GUI\inc\Circle_Class.h" 1
-N#include "device/GUI/src/Frame_Class.cpp"
-N#include "device/GUI/src/Screen_obj.cpp"
+N#include "Frame_Class.h"
+N#include "screen_obj.h"
 N
 N
 Ntemplate <typename T>
@@ -38652,8 +38622,6 @@ N	  int32_t fBotToTop (int32_t, int32_t, int32_t, int32_t, ColorTypeDef);
 N	  int32_t Sqr (int32_t);
 N};
 N
-N/*End Of File*/
-L 7 "..\tester_1.03\device/GUI/src/Circle_Class.cpp" 2
 N
 Ntemplate <typename T>
 NCircle_Class<T>::Circle_Class (){}
@@ -38911,26 +38879,23 @@ N
 N
 N/*End Of File*/
 L 17 ".\device\GUI\inc\screen.h" 2
-N#include "device/GUI/src/Line_Class.cpp"
-L 1 "..\tester_1.03\device/GUI/src/Line_Class.cpp" 1
+N#include "line_class.h"
+L 1 ".\device\GUI\inc\line_class.h" 1
 N#ifndef LINE_CLASS_CPP
 N#define LINE_CLASS_CPP
 N
 N#ifdef SOFTWARE_GL
 N
-N#include "Line_Class.h"
-L 1 ".\device\GUI\inc\Line_Class.h" 1
-N#include "device/GUI/src/Frame_Class.cpp"
-N#include "device/GUI/src/Screen_obj.cpp"
-N#include "device/GUI/src/Rectangle_Class.cpp"
-L 1 "..\tester_1.03\device/GUI/src/Rectangle_Class.cpp" 1
-N#ifndef RECTANGLE_CLASS_CPP
-N#define RECTANGLE_CLASS_CPP
-N#include "Rectangle_Class.h"
-L 1 ".\device\GUI\inc\Rectangle_Class.h" 1
+N#include "frame_class.h"
+N#include "screen_obj.h"
+N#include "rectangle_class.h"
+L 1 ".\device\GUI\inc\rectangle_class.h" 1
+N#ifndef RECTANGLE_CLASS_H
+N#define RECTANGLE_CLASS_H
+N
 N#include <stdint.h>
-N#include "device/GUI/src/Frame_Class.cpp"
-N#include "device/GUI/src/Screen_obj.cpp"
+N#include "Frame_Class.h"
+N#include "screen_obj.h"
 N
 Ntemplate <typename T> 
 Nclass Rectangle_Class   : public Screen_Obj<T> {
@@ -38943,8 +38908,6 @@ N	private:
 N		uint8_t Z;
 N	
 N};
-N
-L 4 "..\tester_1.03\device/GUI/src/Rectangle_Class.cpp" 2
 N
 Ntemplate <typename T>
 NRectangle_Class<T>::Rectangle_Class () {}
@@ -38982,9 +38945,7 @@ N}
 N
 N
 N#endif /*RECTANGLE_CLASS_CPP*/
-N
-N/*End Of File*/
-L 4 ".\device\GUI\inc\Line_Class.h" 2
+L 9 ".\device\GUI\inc\line_class.h" 2
 N
 Ntemplate <typename T>
 Nclass Line_Class : public Screen_Obj<T> {
@@ -39009,10 +38970,6 @@ N	  int8_t log2LaySize;
 N	
 N	  friend class Rectangle_Class<T>;
 N};
-N
-N/*End Of File*/
-N
-L 7 "..\tester_1.03\device/GUI/src/Line_Class.cpp" 2
 N
 Ntemplate <typename T>
 NLine_Class<T>::Line_Class()
@@ -39225,11 +39182,12 @@ N#endif /*SOFTWARE_GL*/
 N
 N#endif /*LINE_CLASS_CPP*/
 N
+N
 N/*End Of File*/
 N
 L 18 ".\device\GUI\inc\screen.h" 2
-N#include "device/GUI/src/Rectangle_Class.cpp"
-N#include "device/GUI/src/Print_Class.cpp"
+N#include "rectangle_class.h"
+N#include "print_class.h"
 N
 Nclass Screen : public Locker ,
 N	           public Coordinates,		  
@@ -39297,70 +39255,5 @@ N
 N#endif /*DEVICE_H*/
 N
 L 5 "device\hardware\src\device.cpp" 2
+C "device\hardware\src\device.cpp" 5 22 cannot open source input file "extern.cpp": No such file or directory
 N#include "extern.cpp"
-L 1 "..\tester_1.03\extern.cpp" 1
-N#include "device.h"
-Nextern SRAM_HandleTypeDef            hsram;
-Nextern FMC_NORSRAM_TimingTypeDef     SRAM_Timing;
-Xextern FSMC_NORSRAM_TimingTypeDef     SRAM_Timing;
-Nextern DMA_HandleTypeDef             DmaHandle,
-N                                     DmaHandleGraphic;
-Nextern SPI_HandleTypeDef             SpiHandle;
-Nextern TIM_HandleTypeDef             TimHandle;
-Nextern TIM_HandleTypeDef             Tim2_Handle;
-N
-Nextern MemoryAllocator Heap;
-Nextern SpiSoftTypeDef LcdSpi;
-Nextern LcdDriverDef TFT;
-N
-Nextern Frame2DManager<gbasic_t> FrameManager;
-Nextern ScreenManager ScreenMang;
-N
-N
-N
-N/*Res*/
-Nextern const tImage Image_Rose;
-N/*Res*/
-N
-N/*End Of File*/
-L 6 "device\hardware\src\device.cpp" 2
-N
-N
-Nint32_t LcdDriverDef::ExtInput (b2D, uint32_t)
-N{
-N	return -1;
-N}
-N
-NMemoryAllocator Heap;
-N
-NSpiSoftTypeDef LcdSpi;
-NLcdDriverDef TFT(Lcd_Rgb_Port, LcdSpi, 0xffff0000);
-XLcdDriverDef TFT(((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x00020000) + 0x0400)), LcdSpi, 0xffff0000);
-N
-Nvoid LcdDriverDef::BcklApply(uint8_t level)
-N{
-N	if (level)
-N	    DEV_Pin_Set(Lcd_light_Port, lcd_led_pin ); 
-X	    do { ((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x00020000) + 0x1000))->BSRR = lcd_led_pin; } while (0); 
-N}
-N
-NFrame2DManager<gbasic_t> FrameManager;
-N
-Ntemplate <typename T>
-Nvoid Frame2D<T>::DmaTransfer(ColorTypeDef *dst, ColorTypeDef *src, uint32_t lenght)
-N{
-N	//HAL_DMA_Start(&DmaHandleGraphic, (uint32_t)src, (uint32_t)dst, lenght);
-N}
-NScreenManager ScreenMang;
-N
-Nvoid *Alloc (uint32_t size)
-N{
-N    return Heap.New(size);
-N}
-N
-Nint32_t Free (void *p)
-N{
-N    return Heap.Delete(p);
-N}
-N
-N

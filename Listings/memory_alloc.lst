@@ -466,15 +466,10 @@ N
 N/* end of errno.h */
 N
 L 6 ".\memory\inc\memory_alloc.h" 2
-N#include "misc\src\list.cpp"
-L 1 "..\tester_1.03\misc\src\list.cpp" 1
-N
-N#ifndef __LIST
-N#define __LIST
-N
 N#include "List.h"
 L 1 ".\misc\inc\List.h" 1
-N
+N#ifndef __LIST
+N#define __LIST
 N#include <stdint.h>
 N
 Ntemplate <class T, typename K>
@@ -522,9 +517,6 @@ N	  private:
 N		  T *First, *Last;
 N	    uint32_t Elements;
 N  };
-N
-L 6 "..\tester_1.03\misc\src\list.cpp" 2
-N
 N
 Ntemplate <class T>
 NList_Iterator<T>::List_Iterator()

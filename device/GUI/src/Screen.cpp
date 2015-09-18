@@ -6,6 +6,7 @@ Screen::Screen (){}
 
 void Screen::operator () (b2D rect, Frame2D<gbasic_t> &frame)
 {
+	
 	this->Dispose(rect);
 	this->Frame = &frame;
 	this->Fill(*this);
@@ -19,8 +20,8 @@ void Screen::operator () (b2D rect, Frame2D<gbasic_t> &frame)
 	this->Print(*this);
 	      this->Print.Init();
     
-    this->frame_ = this->Frame->GetBuff();
-    this->h_     = this->Frame->GetH();
+  this->frame_ = this->Frame->GetBuff();
+  this->h_     = this->Frame->GetH();
 }
 
 int32_t Screen::Pixel (gbasic_t x, gbasic_t y, ColorTypeDef color)
@@ -32,6 +33,38 @@ int32_t Screen::Pixel (gbasic_t x, gbasic_t y, ColorTypeDef color)
 ColorTypeDef Screen::Pixel (gbasic_t x, gbasic_t y)
 {
   return *(frame_ + (y + Y0) + (x + X0) * h_);    
+}
+
+ColorTypeDef Screen::PixelsAround (gbasic_t x, gbasic_t y)
+{
+	int32_t tx = (x + X0) * h_;
+	int32_t ty = y + Y0;
+	int32_t s = tx + ty;
+	uint32_t h = h_;
+	if (! s) {
+		s = 1;
+		h = 0;
+	} else {}
+    if (*(frame_ + y + tx)) {
+        return 1;
+    } else     if (*(frame_ + s + h)) {
+        return 1;
+    } else     if (*(frame_ + s - h)) {
+        return 1;
+    } else     if (*(frame_ + s + 1)) {
+        return 1;
+    } else     if (*(frame_ + s - 1)) {
+        return 1;
+    } else     if (*(frame_ + s + 1 + h)) {
+        return 1;
+    } else     if (*(frame_ + s - 1 - h)) {
+        return 1;
+    } else     if (*(frame_ + s - 1 + h)) {
+        return 1;
+    } else     if (*(frame_ + s + 1 - h)) {
+        return 1;
+    } else {} 
+		return 0;
 }
 
 int32_t Screen::Refresh ()
@@ -46,7 +79,8 @@ Frame2D<gbasic_t> *Screen::GetFrame ()
 
 tTexture *Screen::MakeTexture (gbasic_t w, gbasic_t h)
 {
-    tTexture *texture = this->New<tTexture>((w + 1) * (h + 1) * sizeof(ColorTypeDef));
+	
+  tTexture *texture = this->New<tTexture>((w + 1) * (h + 1) * sizeof(ColorTypeDef));
 	texture->Image = (ColorTypeDef *)(texture + 1);
 	texture->W = w;
 	texture->H = h;
@@ -76,7 +110,7 @@ void ScreenManager::operator () ()
 Screen *ScreenManager::Create (b2D rect, Frame2D<gbasic_t> *frame)
 {
 	Screen *screen = this->New();
-	*this + screen;
+	list_ + screen;
 	screen->operator()(rect, *frame);
 	return screen;
 }
@@ -84,16 +118,16 @@ Screen *ScreenManager::Create (b2D rect, Frame2D<gbasic_t> *frame)
 int32_t ScreenManager::Kill (Screen *screen)
 {
 	if (screen == (Screen *)0) return -1;
-	*this - screen;
-	this->Delete(screen);
+	
+	//list_ - iterator_;
+	//this->Delete(screen);
 	return 0;
 }
 
 int32_t ScreenManager::Refresh (uint32_t flags)
 {
 	if (this->Test()) return -1;
-	register uint32_t i = this->Contain();
-	while (i--)
-		this->Get(i)->Refresh();
+	//while (i--)
+		//list_.Get(i)->Refresh();
 	return 0;
 }

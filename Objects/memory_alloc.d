@@ -2,7 +2,6 @@
 .\objects\memory_alloc.o: .\memory\inc\memory_alloc.h
 .\objects\memory_alloc.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\memory_alloc.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\errno.h
-.\objects\memory_alloc.o: ..\tester_1.03\misc\src\list.cpp
 .\objects\memory_alloc.o: .\misc\inc\List.h
 .\objects\memory_alloc.o: .\misc\inc\locker.h
 .\objects\memory_alloc.o: .\device\GUI\inc\Terminal_Interface.h

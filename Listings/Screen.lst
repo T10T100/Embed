@@ -443,13 +443,11 @@ N
 N/*End Of File*/
 N
 L 6 ".\device\GUI\inc\Screen.h" 2
-N#include "device/GUI/src/Frame_Class.cpp"
-L 1 "..\tester_1.03\device/GUI/src/Frame_Class.cpp" 1
-N#ifndef FRAME_CLASS_CPP
-N#define FRAME_CLASS_CPP
-N
 N#include "Frame_Class.h"
 L 1 ".\device\GUI\inc\Frame_Class.h" 1
+N#ifndef FRAME_CLASS_H
+N#define FRAME_CLASS_H
+N
 N#include "GUI_defs.h"
 L 1 ".\device\GUI\inc\GUI_defs.h" 1
 N
@@ -533,7 +531,7 @@ N
 N
 N
 N#endif /*GUI_DEFS_H*/
-L 2 ".\device\GUI\inc\Frame_Class.h" 2
+L 5 ".\device\GUI\inc\Frame_Class.h" 2
 N#include "geometry.h"
 L 1 ".\misc\inc\geometry.h" 1
 N
@@ -2065,17 +2063,12 @@ N#endif
 N
 N
 N
-L 3 ".\device\GUI\inc\Frame_Class.h" 2
+L 6 ".\device\GUI\inc\Frame_Class.h" 2
 N#include "memory_template.h"
-N#include "misc/src/List.cpp"
-L 1 "..\tester_1.03\misc/src/List.cpp" 1
-N
-N#ifndef __LIST
-N#define __LIST
-N
 N#include "List.h"
 L 1 ".\misc\inc\List.h" 1
-N
+N#ifndef __LIST
+N#define __LIST
 N#include <stdint.h>
 N
 Ntemplate <class T, typename K>
@@ -2123,9 +2116,6 @@ N	  private:
 N		  T *First, *Last;
 N	    uint32_t Elements;
 N  };
-N
-L 6 "..\tester_1.03\misc/src/List.cpp" 2
-N
 N
 Ntemplate <class T>
 NList_Iterator<T>::List_Iterator()
@@ -2330,7 +2320,7 @@ N	return this->Elements;
 N}
 N
 N#endif /*__LIST*/
-L 5 ".\device\GUI\inc\Frame_Class.h" 2
+L 8 ".\device\GUI\inc\Frame_Class.h" 2
 N
 Ntemplate <typename T>
 Nstruct frame_data_t {
@@ -2369,12 +2359,7 @@ N	  Frame2D<T> *Create (b2D);
 N	  Frame2D<T> *Access (uint32_t);
 N	private:
 N};
-N
-N
-N/*End Of File*/
-L 5 "..\tester_1.03\device/GUI/src/Frame_Class.cpp" 2
-N
-N
+N												 
 Ntemplate <typename T>
 NFrame2D<T>::Frame2D (){}
 N
@@ -2466,10 +2451,188 @@ N{
 N	Frame2D<T> *frame = this->Get(id);
 N	return frame;
 N}
-N#endif /*FRAME_CLASS_CPP*/
+N#endif /*FRAME_CLASS_H*/
 N
+N
+N
+N/*End Of File*/
 L 7 ".\device\GUI\inc\Screen.h" 2
-N#include "misc/src/list.cpp"
+N#include "list.h"
+N#include "list_template.h"
+L 1 ".\misc\inc\list_template.h" 1
+N#ifndef LIST_TEMPLATE_H
+N#define LIST_TEMPLATE_H
+N#include <stdint.h>
+N#include "memory_template.h"
+N
+N#include "list.h"
+N
+Ntemplate <typename T_item, typename T_key>
+Nclass Node {
+N	public:
+N		Node *rlink, *llink;
+N	  T_item *item_;
+N	  T_key key;
+N	private:
+N};
+N
+Ntemplate <typename T_item, typename T_key>
+Nclass Iterator {
+N	public:
+N		Node<T_item, T_key> *node_;
+N    Iterator<T_item, T_key> &operator = (uint32_t);	
+N	  T_item *Pick ();
+N	private:		
+N};
+N
+Ntemplate <typename T_item, typename T_key>
+NIterator<T_item, T_key> &Iterator<T_item, T_key>::operator = (uint32_t)
+N{
+N
+W ".\misc\inc\list_template.h" 30 1 missing return statement at end of non-void function "Iterator<T_item, T_key>::operator=(std::uint32_t)"
+N}
+N
+Ntemplate <typename T_item, typename T_key>
+NT_item *Iterator<T_item, T_key>::Pick()
+N{
+N    return node_->item_;
+N}
+N
+Ntemplate <typename T_item, typename T_key>
+Nclass List_Order : private Allocator <void> {
+N  protected:
+N	  
+N	public:
+N		void operator () ();
+N	  List_Order &operator + (T_item &);
+N	  List_Order &operator + (T_item *);
+N	  List_Order &operator - (Iterator<T_item, T_key> &);
+N	  List_Order &operator - (Iterator<T_item, T_key> *);
+N	  Iterator<T_item, T_key>Pick (uint32_t);
+N	  Iterator<T_item, T_key>PickPrev (Iterator<T_item, T_key> &);
+N	  Iterator<T_item, T_key>PickPrev (Iterator<T_item, T_key> *);
+N	  Iterator<T_item, T_key>PickNext (Iterator<T_item, T_key> *);
+N	  Iterator<T_item, T_key>PickNext (Iterator<T_item, T_key> &);
+N	  uint32_t Size ();
+N	  
+N	  Iterator<T_item, T_key> Begin ();
+N	  Iterator<T_item, T_key> End ();
+N	  List_Order ();
+N	  ~List_Order ();
+N	private:
+N		List_Iterator< Node<T_item, T_key> > llist_; 
+N	  
+N};
+N
+Ntemplate <typename T_item, typename T_key>
+NIterator<T_item, T_key> List_Order<T_item, T_key>::Begin ()
+N{
+N	Iterator<T_item, T_key> I;
+N	I.node_ = llist_.GetFirst();
+N	return I;
+N}
+N
+Ntemplate <typename T_item, typename T_key>
+NIterator<T_item, T_key> List_Order<T_item, T_key>::End ()
+N{
+N	Iterator<T_item, T_key> I;
+N	I->node_ = llist_.GetLast();
+N	return I;
+N}
+N
+Ntemplate <typename T_item, typename T_key>
+Nuint32_t List_Order<T_item, T_key>::Size ()
+N{
+N	return llist_.Contain();
+N}
+N
+Ntemplate <typename T_item, typename T_key>
+NList_Order<T_item, T_key>::List_Order (){}
+N
+Ntemplate <typename T_item, typename T_key>
+NList_Order<T_item, T_key>::~List_Order (){}
+N
+Ntemplate <typename T_item, typename T_key>
+Nvoid List_Order<T_item, T_key>::operator ()()
+N{
+N	
+N}
+N
+Ntemplate <typename T_item, typename T_key>
+NList_Order<T_item, T_key> &List_Order<T_item, T_key>::operator + (T_item &item)
+N{
+N	Node<T_item, T_key> *node = this->New< Node<T_item, T_key> >();
+N	if (! node) {
+N		  return (*this);
+N	} else {}
+N	node->item_ = &item;
+N	llist_ + node;
+N  return (*this);
+N}
+N
+Ntemplate <typename T_item, typename T_key>
+NList_Order<T_item, T_key> &List_Order<T_item, T_key>::operator + (T_item *item)
+N{
+N	T_item &lval = *item;
+N  return (*this) + lval;
+N}
+N
+Ntemplate <typename T_item, typename T_key>
+NList_Order<T_item, T_key> &List_Order<T_item, T_key>::operator - (Iterator<T_item, T_key> &item)
+N{
+N
+N  return (*this);	
+N}
+N
+Ntemplate <typename T_item, typename T_key>
+NList_Order<T_item, T_key> &List_Order<T_item, T_key>::operator - (Iterator<T_item, T_key> *item)
+N{
+N	T_item &lval = item;
+N	return (*this) - lval;
+N}
+N
+N
+Ntemplate <typename T_item, typename T_key>
+NIterator<T_item, T_key>List_Order<T_item, T_key>::Pick (uint32_t n)
+N{
+N	Iterator<T_item, T_key> I;
+N	I->node_ = llist_.Get(n);
+N	return I;
+N}
+N
+Ntemplate <typename T_item, typename T_key>
+NIterator<T_item, T_key>List_Order<T_item, T_key>::PickNext (Iterator<T_item, T_key> &item)
+N{
+N	item.node_ = llist_.GetNext(item.node_);
+N	return item;
+N}
+N
+Ntemplate <typename T_item, typename T_key>
+NIterator<T_item, T_key>List_Order<T_item, T_key>::PickNext (Iterator<T_item, T_key> *item)
+N{
+N	item->node_ = llist_.GetNext(item->node_);
+N	return item;
+N}
+N
+Ntemplate <typename T_item, typename T_key>
+NIterator<T_item, T_key>List_Order<T_item, T_key>::PickPrev (Iterator<T_item, T_key> &item)
+N{
+N	item.node_ = llist_.GetPrev(item.node_);
+N	return item;
+N}
+N
+Ntemplate <typename T_item, typename T_key>
+NIterator<T_item, T_key>List_Order<T_item, T_key>::PickPrev (Iterator<T_item, T_key> *item)
+N{
+N	item->node_ = llist_.GetPrev(item->node_);
+N	return item;
+N}
+N
+N#endif /*LIST_TEMPLATE_H*/
+N
+N/*End Of File*/
+N
+L 9 ".\device\GUI\inc\Screen.h" 2
 N#include "geometry.h"
 N#include "locker.h"
 L 1 ".\misc\inc\locker.h" 1
@@ -2491,7 +2654,7 @@ N
 N
 N#endif
 N
-L 10 ".\device\GUI\inc\Screen.h" 2
+L 11 ".\device\GUI\inc\Screen.h" 2
 N
 N#include "affine_tf.h"
 L 1 ".\misc\inc\affine_tf.h" 1
@@ -2519,16 +2682,15 @@ N#endif /*AFFINE_TF_H*/
 N
 N/*End Of File*/
 N
-L 12 ".\device\GUI\inc\Screen.h" 2
+L 13 ".\device\GUI\inc\Screen.h" 2
 N
-N#include "device/GUI/src/Screen_Obj.cpp"
-L 1 "..\tester_1.03\device/GUI/src/Screen_Obj.cpp" 1
+N#include "screen_obj.h"
+L 1 ".\device\GUI\inc\screen_obj.h" 1
 N#ifndef SCREEN_OBJ_CPP
 N#define SCREEN_OBJ_CPP
-N#include "Screen_obj.h"
-L 1 ".\device\GUI\inc\Screen_obj.h" 1
+N
 N#include <stdint.h>
-N#include "device/GUI/src/Frame_Class.cpp"
+N#include "frame_class.h"
 N
 Ntemplate <typename T>
 Nclass Screen_Obj {
@@ -2541,8 +2703,6 @@ N	  ColorTypeDef *Frame;
 N	  uint32_t H;
 N};
 N
-N/*End Of File*/
-L 4 "..\tester_1.03\device/GUI/src/Screen_Obj.cpp" 2
 N
 Ntemplate <typename T>
 NScreen_Obj<T>::Screen_Obj () {}
@@ -2560,18 +2720,16 @@ N
 N#endif /*SCREEN_OBJ_CPP*/
 N
 N/*End Of File*/
-L 14 ".\device\GUI\inc\Screen.h" 2
-N#include "device/GUI/src/Fill_Class.cpp"
-L 1 "..\tester_1.03\device/GUI/src/Fill_Class.cpp" 1
+L 15 ".\device\GUI\inc\Screen.h" 2
+N#include "fill_class.h"
+L 1 ".\device\GUI\inc\fill_class.h" 1
 N#ifndef FILL_CLASS_CPP
 N#define FILL_CLASS_CPP
 N
 N#ifdef SOFTWARE_GL
 N
-N#include "Fill_Class.h"
-L 1 ".\device\GUI\inc\Fill_Class.h" 1
-N#include "device/GUI/src/Frame_Class.cpp"
-N#include "device/GUI/src/Screen_obj.cpp"
+N#include "frame_class.h"
+N#include "screen_obj.h"
 N
 N#ifndef GUI_FILL_TRIG_JITTER
 N#define GUI_FILL_TRIG_JITTER 3
@@ -2591,8 +2749,6 @@ N	protected:
 N	  friend class Screen; 
 N};
 N
-N
-L 7 "..\tester_1.03\device/GUI/src/Fill_Class.cpp" 2
 N
 Ntemplate <typename T>
 NFill_Class<T>::Fill_Class (){}
@@ -2701,26 +2857,22 @@ N#endif /*SOFTWARE_GL*/
 N
 N
 N#endif /*FILL_CLASS_CPP*/
-N
-L 15 ".\device\GUI\inc\Screen.h" 2
-N#include "device/GUI/src/Bitmap_Class.cpp"
-L 1 "..\tester_1.03\device/GUI/src/Bitmap_Class.cpp" 1
-N#ifndef BITMAP_CLASS_CPP
-N#define BITMAP_CLASS_CPP
+L 16 ".\device\GUI\inc\Screen.h" 2
+N#include "bitmap_class.h"
+L 1 ".\device\GUI\inc\bitmap_class.h" 1
+N#ifndef BITMAP_CLASS_H
+N#define BITMAP_CLASS_H
 N
 N#ifdef SOFTWARE_GL
 N
-N#include "bitmap_class.h"
-L 1 ".\device\GUI\inc\bitmap_class.h" 1
 N#include <stdint.h>
-N#include "device/GUI/src/Frame_Class.cpp"
-N#include "device/GUI/src/Screen_obj.cpp"
-N#include "device/GUI/src/Print_Class.cpp"
-L 1 "..\tester_1.03\device/GUI/src/Print_Class.cpp" 1
-N#ifndef PRINT_CLASS_CPP
-N#define PRINT_CLASS_CPP
-N#include "Print_Class.h"
-L 1 ".\device\GUI\inc\Print_Class.h" 1
+N#include "Frame_Class.h"
+N#include "screen_obj.h"
+N#include "print_class.h"
+L 1 ".\device\GUI\inc\print_class.h" 1
+N#ifndef PRINT_CLASS_H
+N#define PRINT_CLASS_H
+N
 N#include <stdint.h>
 N#include "String_Defs.h"
 L 1 ".\device\GUI\inc\String_Defs.h" 1
@@ -2744,10 +2896,10 @@ N
 N#endif /*STRING_DEFS_H*/
 N
 N/*End Of File*/
-L 3 ".\device\GUI\inc\Print_Class.h" 2
-N#include "device/GUI/src/Frame_Class.cpp"
-N#include "device/GUI/src/Screen_obj.cpp"
-N#include "misc/src/List.cpp"
+L 6 ".\device\GUI\inc\print_class.h" 2
+N#include "Frame_Class.h"
+N#include "screen_obj.h"
+N#include "list.h"
 N
 Nenum FormatEnum{
 N	StrFormatTabOnly      = 0,
@@ -2782,8 +2934,6 @@ N	  gbasic_t FontW, FontH;
 N	  const tFont *Font;
 N	  uint8_t Format;
 N};
-N
-L 4 "..\tester_1.03\device/GUI/src/Print_Class.cpp" 2
 N
 Ntemplate <typename T>
 NPrint_Class<T>::Print_Class() {}
@@ -2895,9 +3045,7 @@ N
 N
 N#endif /*PRINT_CLASS_CPP*/
 N
-N/*End Of File*/
-N
-L 5 ".\device\GUI\inc\bitmap_class.h" 2
+L 10 ".\device\GUI\inc\bitmap_class.h" 2
 N
 N
 Ntemplate <typename T> 
@@ -2989,8 +3137,7 @@ N
 N		
 N	friend class Print_Class<T>;
 N};
-N
-L 7 "..\tester_1.03\device/GUI/src/Bitmap_Class.cpp" 2
+N	
 N
 Ntemplate <typename T>
 NBitmap_Class<T>::Bitmap_Class ()
@@ -3139,7 +3286,7 @@ N				dest[xi - (int32_t)(j) * w + C] = src[xi];
 N		}
 N	}
 N	return dest;
-W "..\tester_1.03\device/GUI/src/Bitmap_Class.cpp" 146 10 variable "W" was declared but never referenced
+W ".\device\GUI\inc\bitmap_class.h" 241 10 variable "W" was declared but never referenced
 N}
 N
 Ntemplate <typename T> template <typename dest_t, typename src_t>
@@ -3695,20 +3842,18 @@ N#else /*!SOFTWARE_GL*/
 S
 N#endif /*SOFTWARE_GL*/
 N
-N#endif /*BITMAP_CLASS_CPP*/
+N#endif /*BITMAP_CLASS_H*/
 N
-L 16 ".\device\GUI\inc\Screen.h" 2
-N#include "device/GUI/src/Circle_Class.cpp"
-L 1 "..\tester_1.03\device/GUI/src/Circle_Class.cpp" 1
+L 17 ".\device\GUI\inc\Screen.h" 2
+N#include "circle_class.h"
+L 1 ".\device\GUI\inc\circle_class.h" 1
 N#ifndef CIRCLE_CLASS_CPP
 N#define CIRCLE_CLASS_CPP
 N
 N#ifdef SOFTWARE_GL
 N
-N#include "Circle_Class.h"
-L 1 ".\device\GUI\inc\Circle_Class.h" 1
-N#include "device/GUI/src/Frame_Class.cpp"
-N#include "device/GUI/src/Screen_obj.cpp"
+N#include "Frame_Class.h"
+N#include "screen_obj.h"
 N
 N
 Ntemplate <typename T>
@@ -3736,8 +3881,6 @@ N	  int32_t fBotToTop (int32_t, int32_t, int32_t, int32_t, ColorTypeDef);
 N	  int32_t Sqr (int32_t);
 N};
 N
-N/*End Of File*/
-L 7 "..\tester_1.03\device/GUI/src/Circle_Class.cpp" 2
 N
 Ntemplate <typename T>
 NCircle_Class<T>::Circle_Class (){}
@@ -3994,27 +4137,24 @@ N#endif /*CIRCLE_CLASS_CPP*/
 N
 N
 N/*End Of File*/
-L 17 ".\device\GUI\inc\Screen.h" 2
-N#include "device/GUI/src/Line_Class.cpp"
-L 1 "..\tester_1.03\device/GUI/src/Line_Class.cpp" 1
+L 18 ".\device\GUI\inc\Screen.h" 2
+N#include "line_class.h"
+L 1 ".\device\GUI\inc\line_class.h" 1
 N#ifndef LINE_CLASS_CPP
 N#define LINE_CLASS_CPP
 N
 N#ifdef SOFTWARE_GL
 N
-N#include "Line_Class.h"
-L 1 ".\device\GUI\inc\Line_Class.h" 1
-N#include "device/GUI/src/Frame_Class.cpp"
-N#include "device/GUI/src/Screen_obj.cpp"
-N#include "device/GUI/src/Rectangle_Class.cpp"
-L 1 "..\tester_1.03\device/GUI/src/Rectangle_Class.cpp" 1
-N#ifndef RECTANGLE_CLASS_CPP
-N#define RECTANGLE_CLASS_CPP
-N#include "Rectangle_Class.h"
-L 1 ".\device\GUI\inc\Rectangle_Class.h" 1
+N#include "frame_class.h"
+N#include "screen_obj.h"
+N#include "rectangle_class.h"
+L 1 ".\device\GUI\inc\rectangle_class.h" 1
+N#ifndef RECTANGLE_CLASS_H
+N#define RECTANGLE_CLASS_H
+N
 N#include <stdint.h>
-N#include "device/GUI/src/Frame_Class.cpp"
-N#include "device/GUI/src/Screen_obj.cpp"
+N#include "Frame_Class.h"
+N#include "screen_obj.h"
 N
 Ntemplate <typename T> 
 Nclass Rectangle_Class   : public Screen_Obj<T> {
@@ -4027,8 +4167,6 @@ N	private:
 N		uint8_t Z;
 N	
 N};
-N
-L 4 "..\tester_1.03\device/GUI/src/Rectangle_Class.cpp" 2
 N
 Ntemplate <typename T>
 NRectangle_Class<T>::Rectangle_Class () {}
@@ -4066,9 +4204,7 @@ N}
 N
 N
 N#endif /*RECTANGLE_CLASS_CPP*/
-N
-N/*End Of File*/
-L 4 ".\device\GUI\inc\Line_Class.h" 2
+L 9 ".\device\GUI\inc\line_class.h" 2
 N
 Ntemplate <typename T>
 Nclass Line_Class : public Screen_Obj<T> {
@@ -4093,10 +4229,6 @@ N	  int8_t log2LaySize;
 N	
 N	  friend class Rectangle_Class<T>;
 N};
-N
-N/*End Of File*/
-N
-L 7 "..\tester_1.03\device/GUI/src/Line_Class.cpp" 2
 N
 Ntemplate <typename T>
 NLine_Class<T>::Line_Class()
@@ -4309,16 +4441,16 @@ N#endif /*SOFTWARE_GL*/
 N
 N#endif /*LINE_CLASS_CPP*/
 N
+N
 N/*End Of File*/
 N
-L 18 ".\device\GUI\inc\Screen.h" 2
-N#include "device/GUI/src/Rectangle_Class.cpp"
-N#include "device/GUI/src/Print_Class.cpp"
+L 19 ".\device\GUI\inc\Screen.h" 2
+N#include "rectangle_class.h"
+N#include "print_class.h"
 N
 Nclass Screen : public Locker ,
-N	           public Coordinates,		  
-N		       public List_Node <Screen, uint8_t>,
-N               public Allocator <Screen>				 {
+N	             public Coordinates,
+N               public Allocator <Screen>				  {
 N	public:
 N	  Screen ();
 N	  void operator () (b2D, Frame2D<gbasic_t> &); 
@@ -4327,12 +4459,13 @@ N	  tTexture *MakeTexture (b2D);
 N	  tTexture *MakeTexture (gbasic_t, gbasic_t);
 N	  int32_t   KillTexture (tTexture *);
 N    
-N      int32_t Pixel (gbasic_t, gbasic_t, ColorTypeDef);
-N      ColorTypeDef Pixel (gbasic_t, gbasic_t);
+N    int32_t Pixel (gbasic_t, gbasic_t, ColorTypeDef);
+N    ColorTypeDef Pixel (gbasic_t, gbasic_t);
+N	  ColorTypeDef PixelsAround (gbasic_t, gbasic_t);
 N	  
 N	  Affine_Body Affine;
 N	
-N      Fill_Class       <Screen> Fill;
+N    Fill_Class       <Screen> Fill;
 N	  Bitmap_Class     <Screen> Bitmap;
 N	  Circle_Class     <Screen> Circle;
 N	  Line_Class       <Screen> Line;
@@ -4342,8 +4475,8 @@ N	  Frame2D<gbasic_t> *GetFrame ();
 N	private:
 N	  Frame2D<gbasic_t> *Frame;
 N	  ColorTypeDef back_color;
-N      ColorTypeDef *frame_;
-N      ColorTypeDef h_;
+N    ColorTypeDef *frame_;
+N    ColorTypeDef h_;
 N	
 N	  friend class Bitmap_Class     <Screen>;
 N	  friend class Fill_Class       <Screen>;
@@ -4355,7 +4488,6 @@ N	  friend class Screen_Obj       <Screen>;
 N};
 N							 
 Nclass ScreenManager : public Locker ,
-N	                    public List_Iterator<Screen>,
 N										  public Allocator <Screen>		 {
 N  public:
 N		ScreenManager ();
@@ -4364,6 +4496,8 @@ N	  Screen *Create (b2D, Frame2D<gbasic_t> *);
 N	  int32_t Kill (Screen *);
 N	  int32_t Refresh (uint32_t);
 N	private:
+N		Iterator<Screen, uint8_t>  iterator_;
+N	  List_Order<Screen, uint8_t> list_;
 N};
 N
 N
@@ -4381,6 +4515,7 @@ N
 N
 Nvoid Screen::operator () (b2D rect, Frame2D<gbasic_t> &frame)
 N{
+N	
 N	this->Dispose(rect);
 N	this->Frame = &frame;
 N	this->Fill(*this);
@@ -4394,8 +4529,8 @@ N	      this->Rectangle.Init();
 N	this->Print(*this);
 N	      this->Print.Init();
 N    
-N    this->frame_ = this->Frame->GetBuff();
-N    this->h_     = this->Frame->GetH();
+N  this->frame_ = this->Frame->GetBuff();
+N  this->h_     = this->Frame->GetH();
 N}
 N
 Nint32_t Screen::Pixel (gbasic_t x, gbasic_t y, ColorTypeDef color)
@@ -4407,6 +4542,38 @@ N
 NColorTypeDef Screen::Pixel (gbasic_t x, gbasic_t y)
 N{
 N  return *(frame_ + (y + Y0) + (x + X0) * h_);    
+N}
+N
+NColorTypeDef Screen::PixelsAround (gbasic_t x, gbasic_t y)
+N{
+N	int32_t tx = (x + X0) * h_;
+N	int32_t ty = y + Y0;
+N	int32_t s = tx + ty;
+N	uint32_t h = h_;
+N	if (! s) {
+N		s = 1;
+N		h = 0;
+N	} else {}
+N    if (*(frame_ + y + tx)) {
+N        return 1;
+N    } else     if (*(frame_ + s + h)) {
+N        return 1;
+N    } else     if (*(frame_ + s - h)) {
+N        return 1;
+N    } else     if (*(frame_ + s + 1)) {
+N        return 1;
+N    } else     if (*(frame_ + s - 1)) {
+N        return 1;
+N    } else     if (*(frame_ + s + 1 + h)) {
+N        return 1;
+N    } else     if (*(frame_ + s - 1 - h)) {
+N        return 1;
+N    } else     if (*(frame_ + s - 1 + h)) {
+N        return 1;
+N    } else     if (*(frame_ + s + 1 - h)) {
+N        return 1;
+N    } else {} 
+N		return 0;
 N}
 N
 Nint32_t Screen::Refresh ()
@@ -4421,7 +4588,8 @@ N}
 N
 NtTexture *Screen::MakeTexture (gbasic_t w, gbasic_t h)
 N{
-N    tTexture *texture = this->New<tTexture>((w + 1) * (h + 1) * sizeof(ColorTypeDef));
+N	
+N  tTexture *texture = this->New<tTexture>((w + 1) * (h + 1) * sizeof(ColorTypeDef));
 N	texture->Image = (ColorTypeDef *)(texture + 1);
 N	texture->W = w;
 N	texture->H = h;
@@ -4451,7 +4619,7 @@ N
 NScreen *ScreenManager::Create (b2D rect, Frame2D<gbasic_t> *frame)
 N{
 N	Screen *screen = this->New();
-N	*this + screen;
+N	list_ + screen;
 N	screen->operator()(rect, *frame);
 N	return screen;
 N}
@@ -4459,16 +4627,16 @@ N
 Nint32_t ScreenManager::Kill (Screen *screen)
 N{
 N	if (screen == (Screen *)0) return -1;
-N	*this - screen;
-N	this->Delete(screen);
+N	
+N	//list_ - iterator_;
+N	//this->Delete(screen);
 N	return 0;
 N}
 N
 Nint32_t ScreenManager::Refresh (uint32_t flags)
 N{
 N	if (this->Test()) return -1;
-N	register uint32_t i = this->Contain();
-N	while (i--)
-N		this->Get(i)->Refresh();
+N	//while (i--)
+N		//list_.Get(i)->Refresh();
 N	return 0;
 N}

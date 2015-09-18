@@ -4,7 +4,9 @@
 .\objects\physic.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\objects\physic.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 .\objects\physic.o: .\misc\inc\geometry.h
-.\objects\physic.o: ..\tester_1.03\misc/src/list.cpp
-.\objects\physic.o: .\misc\inc\List.h
+.\objects\physic.o: .\device\GUI\inc\gui_defs.h
+.\objects\physic.o: .\misc\inc\list.h
 .\objects\physic.o: .\memory\inc\memory_template.h
+.\objects\physic.o: .\misc\inc\map_template.h
+.\objects\physic.o: .\misc\inc\list_template.h
 .\objects\physic.o: .\misc\inc\array.h

@@ -38,13 +38,11 @@
 .\objects\tftili9486.o: .\drivers\inc\stm32f4xx_hal_tim_ex.h
 .\objects\tftili9486.o: .\device\hardware\inc\TFTili9486.h
 .\objects\tftili9486.o: .\device\hardware\inc\gpio_ex.h
-.\objects\tftili9486.o: ..\tester_1.03\device/GUI/src/Frame_Class.cpp
-.\objects\tftili9486.o: .\device\GUI\inc\Frame_Class.h
+.\objects\tftili9486.o: .\device\GUI\inc\frame_class.h
 .\objects\tftili9486.o: .\device\GUI\inc\GUI_defs.h
 .\objects\tftili9486.o: .\misc\inc\geometry.h
 .\objects\tftili9486.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 .\objects\tftili9486.o: .\memory\inc\memory_template.h
-.\objects\tftili9486.o: ..\tester_1.03\misc/src/List.cpp
 .\objects\tftili9486.o: .\misc\inc\List.h
 .\objects\tftili9486.o: .\memory\inc\Memory_alloc.h
 .\objects\tftili9486.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\errno.h

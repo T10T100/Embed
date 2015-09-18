@@ -2,7 +2,7 @@
 
 #include "init.h"
 #include "Device.h"
-#include "extern.cpp"
+#include "extern.h"
 
 
 int32_t LcdDriverDef::ExtInput (b2D, uint32_t)

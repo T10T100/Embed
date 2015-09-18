@@ -34351,13 +34351,11 @@ N};
 N
 N#endif
 L 462 ".\device\hardware\inc\TFTili9486.h" 2
-N#include "device/GUI/src/Frame_Class.cpp"
-L 1 "..\tester_1.03\device/GUI/src/Frame_Class.cpp" 1
-N#ifndef FRAME_CLASS_CPP
-N#define FRAME_CLASS_CPP
+N#include "frame_class.h"
+L 1 ".\device\GUI\inc\frame_class.h" 1
+N#ifndef FRAME_CLASS_H
+N#define FRAME_CLASS_H
 N
-N#include "Frame_Class.h"
-L 1 ".\device\GUI\inc\Frame_Class.h" 1
 N#include "GUI_defs.h"
 L 1 ".\device\GUI\inc\GUI_defs.h" 1
 N
@@ -34441,7 +34439,7 @@ N
 N
 N
 N#endif /*GUI_DEFS_H*/
-L 2 ".\device\GUI\inc\Frame_Class.h" 2
+L 5 ".\device\GUI\inc\frame_class.h" 2
 N#include "geometry.h"
 L 1 ".\misc\inc\geometry.h" 1
 N
@@ -35973,7 +35971,7 @@ N#endif
 N
 N
 N
-L 3 ".\device\GUI\inc\Frame_Class.h" 2
+L 6 ".\device\GUI\inc\frame_class.h" 2
 N#include "memory_template.h"
 L 1 ".\memory\inc\memory_template.h" 1
 N#ifndef MEMORY_TEMPLATE_CPP
@@ -36086,16 +36084,11 @@ N//extern Allocator RAM;
 N
 N/*End Of File*/
 N
-L 4 ".\device\GUI\inc\Frame_Class.h" 2
-N#include "misc/src/List.cpp"
-L 1 "..\tester_1.03\misc/src/List.cpp" 1
-N
-N#ifndef __LIST
-N#define __LIST
-N
+L 7 ".\device\GUI\inc\frame_class.h" 2
 N#include "List.h"
 L 1 ".\misc\inc\List.h" 1
-N
+N#ifndef __LIST
+N#define __LIST
 N#include <stdint.h>
 N
 Ntemplate <class T, typename K>
@@ -36143,9 +36136,6 @@ N	  private:
 N		  T *First, *Last;
 N	    uint32_t Elements;
 N  };
-N
-L 6 "..\tester_1.03\misc/src/List.cpp" 2
-N
 N
 Ntemplate <class T>
 NList_Iterator<T>::List_Iterator()
@@ -36350,7 +36340,7 @@ N	return this->Elements;
 N}
 N
 N#endif /*__LIST*/
-L 5 ".\device\GUI\inc\Frame_Class.h" 2
+L 8 ".\device\GUI\inc\frame_class.h" 2
 N
 Ntemplate <typename T>
 Nstruct frame_data_t {
@@ -36389,12 +36379,7 @@ N	  Frame2D<T> *Create (b2D);
 N	  Frame2D<T> *Access (uint32_t);
 N	private:
 N};
-N
-N
-N/*End Of File*/
-L 5 "..\tester_1.03\device/GUI/src/Frame_Class.cpp" 2
-N
-N
+N												 
 Ntemplate <typename T>
 NFrame2D<T>::Frame2D (){}
 N
@@ -36486,8 +36471,11 @@ N{
 N	Frame2D<T> *frame = this->Get(id);
 N	return frame;
 N}
-N#endif /*FRAME_CLASS_CPP*/
+N#endif /*FRAME_CLASS_H*/
 N
+N
+N
+N/*End Of File*/
 L 463 ".\device\hardware\inc\TFTili9486.h" 2
 N#include "geometry.h"
 N#include "Memory_alloc.h"
@@ -36632,7 +36620,7 @@ N
 N/* end of errno.h */
 N
 L 6 ".\memory\inc\Memory_alloc.h" 2
-N#include "misc\src\list.cpp"
+N#include "List.h"
 N#include "locker.h"
 L 1 ".\misc\inc\locker.h" 1
 N#ifndef __LOCKER

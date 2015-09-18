@@ -4,9 +4,13 @@
 #include <stdlib.h>
 #include <math.h>
 #include "geometry.h"
-#include "misc/src/list.cpp"
+#include "gui_defs.h"
+#include "list.h"
 #include "memory_template.h"
+#include "map_template.h"
 #include "array.h"
+
+using namespace storage;
 
 namespace Physic {
 	
@@ -64,6 +68,7 @@ namespace Physic {
         float x, y;
         float vx, vy, v;
         float a;
+			  ColorTypeDef color;
     };
     
     
@@ -73,6 +78,7 @@ namespace Physic {
             ~StarDust ();
             void operator () ();
             void SetUp (DustPart *, uint32_t);
+				    void SetUp (DustPart *, const tImage &, uint32_t);
             void Add (float);
             void Add (uint32_t);
             void Remove (uint32_t);
@@ -82,16 +88,14 @@ namespace Physic {
         private:
             int32_t TestAround (DustPart &);
             uint32_t ReadPixel (float, float);
+				    uint32_t ReadAround (float, float);
             int32_t Draw (float, float, uint32_t);
-            List_Iterator<DustPart> parts_[2];
+            Map <2, DustPart, float> parts_[2];
+				    MapIterator <2, DustPart, float> iterator_;
             uint8_t index_;
             DustPart *edust_;
             uint32_t eq_;
-    };
-    
-    
-    
-    
+    }; 
 };
 
 

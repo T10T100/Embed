@@ -1,13 +1,10 @@
 .\objects\circle_class.o: device\GUI\src\Circle_Class.cpp
 .\objects\circle_class.o: .\device\GUI\inc\Circle_Class.h
-.\objects\circle_class.o: ..\tester_1.03\device/GUI/src/Frame_Class.cpp
 .\objects\circle_class.o: .\device\GUI\inc\Frame_Class.h
 .\objects\circle_class.o: .\device\GUI\inc\GUI_defs.h
 .\objects\circle_class.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\circle_class.o: .\misc\inc\geometry.h
 .\objects\circle_class.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 .\objects\circle_class.o: .\memory\inc\memory_template.h
-.\objects\circle_class.o: ..\tester_1.03\misc/src/List.cpp
 .\objects\circle_class.o: .\misc\inc\List.h
-.\objects\circle_class.o: ..\tester_1.03\device/GUI/src/Screen_obj.cpp
-.\objects\circle_class.o: .\device\GUI\inc\Screen_obj.h
+.\objects\circle_class.o: .\device\GUI\inc\screen_obj.h

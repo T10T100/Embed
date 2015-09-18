@@ -83,7 +83,7 @@ f2P Ball2D::Step (b2D r)
 	  
     uint32_t t = this->Test(r, A);
     if (t) {
-			  switch (t) {
+			  switch (0) {
 					case 1: if (V > 5.0F) {
 							        V -= 0.1F;
                   } else {}
@@ -296,7 +296,7 @@ void Ball2DGroup::Add (uint32_t q)
             return;
         } else {}
         (*ball)(m, p, a);
-				m += 0.1F;
+				m = 7;
 				ball->Sx = 30;
 				ball->Sy = 30;	
 				p += 1.5F;
@@ -352,6 +352,7 @@ StarDust::~StarDust () {}
 void StarDust::operator () ()
 {
     this->index_ = 0;
+	  iterator_ = parts_[index_].Begin();
 }
 
 void StarDust::Step (b2D r)
@@ -366,6 +367,8 @@ void StarDust::Step (b2D r)
         
         part->x = part->x + part->vx;
         part->y = part->y + part->vy;
+			
+			
         if (part->x < 1) {
            part->vx = -part->vx; 
            part->x = 1;
@@ -382,18 +385,16 @@ void StarDust::Step (b2D r)
         
         t = 0;
         npart = &edust_[0];
-        while (t < q) {
+        while (0) {
             
-            
-            if (this->Test(*part, *npart)/* || this->TestAround(*npart)*/) {
+         if (this->Test(*part, *npart)) {
                 moved++;
                 tpart = edust_[q];
                 edust_[q] = edust_[t];
                 edust_[t] = tpart;
                 q--;
-            } else {
-                
-            }
+				 }
+
             npart = &edust_[++t];
         }        
     } 
@@ -428,7 +429,9 @@ int32_t StarDust::TestAround (DustPart &p)
 int32_t StarDust::Test (DustPart &p, DustPart &n)
 {
     float a, vx, vy;
-    if (((uint32_t)p.x == (uint32_t)n.x) && ((uint32_t)p.y == (uint32_t)n.y)) {
+	  f2D r0 = {p.x, p.y, 1, 1};
+		f2D rn = {n.x, n.y, 1, 1};
+    if (gTest::TestBoxBounds(r0, rn)) {
         a = p.a;
         vx = p.vx;
         vy = p.vy;
@@ -476,7 +479,36 @@ void StarDust::SetUp (DustPart *dust, uint32_t q)
        dust[q].vx = 1.0F * sin(a);
        dust[q].vy = 1.0F * cos(a); 
        a += 0.00628;
+			 //parts_[index_] + dust[q];
     }
+}
+
+void StarDust::SetUp (DustPart *dust, const tImage &image,  uint32_t q)
+{
+    float a = 0.1F;
+    this->edust_ = dust;
+		int32_t S = image.W * image.H;
+	  ColorTypeDef targ = 0;
+	  eq_ = 0;
+		for (int x = 0, tx = 0; x < S; x += image.H, tx++) {  
+			for (uint32_t y = 0; y < image.H && q; y++) {
+				  targ = image.Image[x + y];
+				  if (targ != StdColWhite && targ) {
+						  q--;
+						  eq_++;
+						  dust[eq_].x = tx + 30;
+              dust[eq_].y = y + 30;    
+              dust[eq_].v = 1.0F;
+              dust[eq_].a = a;
+              dust[eq_].vx = 1.0 * sin(a);
+              dust[eq_].vy = 1.0 * cos(a); 
+						  dust[eq_].color = targ;
+              a += 0.00628 * static_cast<float>(rand() % 1000);
+						  //parts_[index_] + dust[eq_];
+					} else {}   
+				  
+			}
+		}
 }
 
 void StarDust::Remove (uint32_t)
@@ -490,7 +522,7 @@ void StarDust::Draw ()
     DustPart part = edust_[0];
     uint32_t t = eq_;
     while (t--) {
-        this->Draw (part.x, part.y, part.x * part.y);
+        this->Draw (part.x, part.y, part.color);
         part = edust_[t];
     }
    

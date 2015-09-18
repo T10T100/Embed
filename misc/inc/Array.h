@@ -2,7 +2,7 @@
 #define ARRAY_H
 #include <stdint.h>
 #include "memory_template.h"
-#include "misc/src/list.cpp"
+#include "list.h"
 
 template <typename I>
 class Array : public Allocator <I> {

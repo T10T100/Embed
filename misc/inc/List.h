@@ -1,6 +1,7 @@
 #ifndef __LIST
 #define __LIST
 #include <stdint.h>
+#include <vector>
 
 template <class T, typename K>
 	class List_Node {
@@ -10,53 +11,53 @@ template <class T, typename K>
 		  //virtual bool TestWith (K &);
 	};
 
-template <class T>
-  class List_Iterator {
+template <class Object>
+  class ArrayList {
 	  public:
-	  	List_Iterator ();
-	    bool operator +  (T &);
-	    T *operator -  (T &);
-		  bool operator +  (T *);
-	    T *operator -  (T *);
+	  	ArrayList ();
+	    bool add (Object &);
+		  bool add (Object *);
+		  int32_t add (Object &, uint32_t index);
+		template <typename Array>
+		  void addAll (Array &);
+		template <typename Array>
+		  void addAll (Array *);
+    template <typename A>
+		  A &add(A &);
 		template <typename A>
-		  List_Iterator &operator + (A &);
+		  A &add (A *);
+	    Object &remove (Object &);
+	    Object &remove (Object *);
+		  Object &remove (uint32_t index);
+
 		template <typename A>
-		  List_Iterator &operator + (A *);
-        template <typename A>
-		  List_Iterator &operator + (List_Iterator &);
+		  A &addAll (A &);
 		template <typename A>
-		  List_Iterator &operator + (List_Iterator *);
-		template <typename A>
-		  List_Iterator &Array (A &, uint32_t);
-		template <typename A>
-		  List_Iterator &Array (A *, uint32_t);
-		  /*
-	    bool operator << (T &);
-	    bool operator >> (T &);
-		  */
-	    T *Get (uint32_t index);
-	    T *GetLast ();
-      T *GetFirst ();
-      T *GetNext (T *);
-	    int32_t Put (T &, uint32_t index);
-	    T *Remove (uint32_t index);
-		  int32_t Remove (T *);
-		  int32_t Remove (T &);
-	    uint32_t Contain ();
+		  A &addAll (A *);
+		
+	    Object &get (uint32_t index);
+	    Object &getLast ();
+      Object &getFirst ();
+		  Object &removeLast ();
+      Object &removeFirst ();
+      Object &getNext (Object *);
+		  Object &getNext (Object &);
+	    uint32_t size ();
+		  bool isEmpty ();
 	  private:
-		  T *First, *Last;
+		  Object *First, *Last;
 	    uint32_t Elements;
   };
 
-template <class T>
-List_Iterator<T>::List_Iterator()
+template <class Object>
+ArrayList<Object>::ArrayList()
 {
 }
-template <class T>
-bool List_Iterator<T>::operator + (T &item)
+template <class Object>
+bool ArrayList<Object>::add(Object &item)
 {
 	this->Elements++;
-		T *i,*j;
+		Object *i,*j;
 		if (!this->First) {
 			this->First = &item;
 			this->Last = &item;
@@ -65,8 +66,8 @@ bool List_Iterator<T>::operator + (T &item)
 			return true;
 		}
 		i = this->First;
-		j = (T *)0;
-		while (i != (T *)0) {
+		j = (Object *)0;
+		while (i != (Object *)0) {
 			if (i->key > item.key) {
 				j = i;
 				i = i->rlink;
@@ -86,21 +87,21 @@ bool List_Iterator<T>::operator + (T &item)
 			return true;
 		}
 		j->rlink = &item;
-		item.rlink = (T *)0;
+		item.rlink = (Object *)0;
 		this->Last = &item;
 		item.llink = j;
 		return true;	
 }
-template <class T>
-T *List_Iterator<T>::operator - (T &item)
+template <class Object>
+Object &ArrayList<Object>::remove (Object &item)
 {
-	if (this->Elements == 0)return (T *)0;
+	if (this->Elements == 0)return (Object *)0;
 	this->Elements--;
-	T *l = item.llink,*r = item.rlink;
+	Object *l = item.llink,*r = item.rlink;
 		if (!l&&!r) {
-			this->First = (T *)0;
-			this->Last = (T *)0;
-			return (T *)0;
+			this->First = (Object *)0;
+			this->Last = (Object *)0;
+			return (Object *)0;
 		}
 		if (!l) {
 			this->First = r;
@@ -113,37 +114,27 @@ T *List_Iterator<T>::operator - (T &item)
 			  this->Last = l;
 		}
 		else    r->llink = l;
-		return &item;	
+		return item;	
 }
 
-template <class T>
-bool List_Iterator<T>::operator + (T *item)
+template <class Object>
+bool ArrayList<Object>::add(Object *item)
 {
 	return *this + *item;
 }
 
-template <class T>
-	template <typename A>
-List_Iterator<T> &List_Iterator<T>::operator + (A &array)
-{
-	uint32_t t = array.Contain();
-	while (t--) {
-		(*this) + array[t];
-	}
-	return *this;
-}
 
-template <class T>
-	template <typename A>
-List_Iterator<T> &List_Iterator<T>::operator + (A *array)
+template <class Object>
+	template <typename Array>
+Array &ArrayList<Object>::add(Array *array)
 {
-	A &a = *array;
+	Array &a = *array;
 	return (*this) + a;
 }
 
-template <class T>
-	template <typename A>
-List_Iterator<T> &List_Iterator<T>::Array (A &array, uint32_t t)
+template <class Object>
+	template <typename Array>
+void ArrayList<Object>::addAll (Array &array)
 {
 	while (t--) {
 		(*this) + array[t];
@@ -151,18 +142,21 @@ List_Iterator<T> &List_Iterator<T>::Array (A &array, uint32_t t)
 	return *this;
 }
 
-template <class T>
-	template <typename A>
-List_Iterator<T> &List_Iterator<T>::Array (A *array, uint32_t t)
+template <class Object>
+	template <typename Array>
+void ArrayList<Object>::addAll (Array *array)
 {
-	A &a = *array;
+	for (Object o : array.getUserObject) {
+		
+	}
+	Array &a = *array;
 	return this->Array(a, t);
 }
 
 		  
 
-template <class T>
-T *List_Iterator<T>::operator - (T *item)
+template <class Object>
+Object &ArrayList<Object>::remove (Object *item)
 {
 	return *this - *item;
 }
@@ -179,8 +173,8 @@ bool List_Iterator<T>::operator >> (T &item)
 }
 */
 
-template <class T>
-T *List_Iterator<T>::Get (uint32_t index)
+template <class Object>
+Object &ArrayList<Object>::get (uint32_t index)
 {
 	if (this->Elements < index) return (T *)0;
 	
@@ -189,28 +183,28 @@ T *List_Iterator<T>::Get (uint32_t index)
 		  item = item->rlink;
 	return item;
 }
-template <class T>
-T *List_Iterator<T>::GetLast ()
+template <class Object>
+Object &ArrayList<Object>::getLast ()
 {
 	return this->Last;
 }
 
-template <class T>
-T *List_Iterator<T>::GetFirst ()
+template <class Object>
+Object &ArrayList<Object>::getFirst ()
 {
 	return this->First;
 }
 
-template <class T>
-T *List_Iterator<T>::GetNext (T *item)
+template <class Object>
+Object &ArrayList<Object>::getNext (Object &item)
 {
-    if (item != (T *)0)
-        if (item->rlink != (T *)0) return item->rlink;
-    return (T *)0;
+    if (item != (Object *)0)
+        if (item->rlink != (Object *)0) return item->rlink;
+    return (Object *)0;
 }
 
-template <class T>
-T *List_Iterator<T>::Remove (uint32_t index)
+template <class Object>
+Object &ArrayList<Object>::remove (uint32_t index)
 {
 	if (this->Elements < index) return (T *)0;
 	
@@ -221,31 +215,9 @@ T *List_Iterator<T>::Remove (uint32_t index)
 	return item;
 }
 
-template <class T>
-int32_t List_Iterator<T>::Remove (T *item)
-{
-	if (!this->Contain()) return -1;
-	*(this) - item;
-	
-	return 0;
-}
 
-template <class T>
-int32_t List_Iterator<T>::Remove (T &item)
-{
-	if (!this->Contain()) return -1;
-
-	*(this) - &item;
-	return 0;
-}
-
-template <class T>
-int32_t List_Iterator<T>::Put (T &item, uint32_t index)
-{
-	return -1;
-}
-template <class T>
-uint32_t List_Iterator<T>::Contain ()
+template <class Object>
+uint32_t ArrayList<Object>::size ()
 {
 	return this->Elements;
 }

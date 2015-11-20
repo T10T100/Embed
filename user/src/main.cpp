@@ -62,7 +62,7 @@ int main ()
 	rect.x = 100;
 	rect.y = 50;
 	float A = 0;//(float *)Heap.New(4);
-	b2D rect0 = {0, 0, 50, 50};
+	b2D rect0 = {0, 0, 400, 300};
 	uint16_t counter = 0, c = 0;
 	b2D r= {0, 0, 400, 300};
 	rect.h = 100;
@@ -76,9 +76,9 @@ int main ()
     tex2 = screen->MakeTexture(rot);
     f2P point = {0.0F, 0.0F};
     BallGr(rect0, 15.0F, 10.0F);
-    BallGr.Add(20);
+    BallGr.Add(100);
     float a = 1.0F;
-	dust.SetUp(parts, *Font.CharArray[36].Image, 500);
+	dust.SetUp(parts, Image0, 1000);
 	dust.SetUp(parts, Image0, 800);	
 	while (1) {	
 		counter++;
@@ -89,15 +89,15 @@ int main ()
 		      
           
 		      
-          screen->Bitmap.Fill(tex1);
-          screen->Bitmap.NewBitmapOpen(*tex1);
-              BallGr.Draw();
+          //screen->Bitmap.Fill(tex1);
+          //screen->Bitmap.NewBitmapOpen(*tex1);
+          dust.Draw();
               //screen->Rectangle.Draw(rect0, 0xaa00);
-          screen->Bitmap.NewBitmapClose();
-		      BallGr.Step();
+          //screen->Bitmap.NewBitmapClose();
+		      dust.Step(rect0);
           //screen->Bitmap.Rotate(tex2, tex1, a);
-          screen->Bitmap.SetScale(3, 2);
-          screen->Bitmap.Tile(r, tex1);
+         // screen->Bitmap.SetScale(3, 2);
+          //screen->Bitmap.Tile(r, tex1);
 		      //screen->Bitmap.Draw(0, 0, &Wall0);
 		      //screen->Bitmap.SetScale(0, 0);
 		      screen->Bitmap.SetScale(0, 0);

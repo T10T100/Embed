@@ -362,7 +362,7 @@
             <uC99>0</uC99>
             <useXO>0</useXO>
             <VariousControls>
-              <MiscControls>--cpp </MiscControls>
+              <MiscControls>--cpp11</MiscControls>
               <Define>STM32F417xx,ColorDepthBpp16, tftili9486, SOFTWARE_GL,GUI_ALLIGN_LAYSIZE_TO_POW2,</Define>
               <Undefine></Undefine>
               <IncludePath>.\device\GUI\inc;.\device\hardware\inc;.\device\init\inc;.\misc\inc;.\user\inc;..\tester_1.03;.\memory\inc;.\drivers\inc;.\res;..\Embed</IncludePath>

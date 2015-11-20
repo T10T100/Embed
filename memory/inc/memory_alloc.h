@@ -38,8 +38,8 @@ class MemoryAllocator : public Locker ,
 	  __TEXT PrintTable ();
 	private:
 	  MemoryChunk *Separate (MemoryChunk *P, memory_size_t Size);
-	  int32_t Sanitize (List_Iterator <MemoryChunk> &List);
-	  List_Iterator <MemoryChunk> PoolFree, PoolInUse;
+	  int32_t Sanitize (ArrayList <MemoryChunk> &List);
+	  ArrayList <MemoryChunk> PoolFree, PoolInUse;
       uint32_t Success, Errors, Sanitized;
 };
 

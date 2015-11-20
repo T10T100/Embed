@@ -95,6 +95,7 @@ namespace Physic {
             uint8_t index_;
             DustPart *edust_;
             uint32_t eq_;
+				    DustPart *sub_[100][100];
     }; 
 };
 

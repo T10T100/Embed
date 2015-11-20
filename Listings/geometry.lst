@@ -1865,18 +1865,22 @@ N}
 N
 Nb2D Coordinates::GetxRect ()
 N{
+W "misc\src\geometry.cpp" 11 14 invalid narrowing conversion from "int" to "signed short"
 N	b2D rect = {this->X0 + this->W, this->Y0, this->W, this->H};
 N	return rect;
 N}
 N
 Nb2D Coordinates::GetyRect ()
 N{
+W "misc\src\geometry.cpp" 17 24 invalid narrowing conversion from "int" to "signed short"
 N	b2D rect = {this->X0, this->Y0 + this->H, this->W, this->H};
 N	return rect;
 N}
 N
 Nb2D Coordinates::GetxyRect ()
 N{
+W "misc\src\geometry.cpp" 23 14 invalid narrowing conversion from "int" to "signed short"
+W "misc\src\geometry.cpp" 23 34 invalid narrowing conversion from "int" to "signed short"
 N	b2D rect = {this->X0 + this->W, this->Y0 + this->H, this->W, this->H};
 N	return rect;
 N}

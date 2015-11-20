@@ -83,7 +83,7 @@ f2P Ball2D::Step (b2D r)
 	  
     uint32_t t = this->Test(r, A);
     if (t) {
-			  switch (0) {
+			  switch (t) {
 					case 1: if (V > 5.0F) {
 							        V -= 0.1F;
                   } else {}
@@ -296,7 +296,7 @@ void Ball2DGroup::Add (uint32_t q)
             return;
         } else {}
         (*ball)(m, p, a);
-				m = 7;
+				m += 0.1F;
 				ball->Sx = 30;
 				ball->Sy = 30;	
 				p += 1.5F;
@@ -385,7 +385,7 @@ void StarDust::Step (b2D r)
         
         t = 0;
         npart = &edust_[0];
-        while (0) {
+        while (t < q) {
             
          if (this->Test(*part, *npart)) {
                 moved++;
@@ -394,7 +394,6 @@ void StarDust::Step (b2D r)
                 edust_[t] = tpart;
                 q--;
 				 }
-
             npart = &edust_[++t];
         }        
     } 

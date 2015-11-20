@@ -101,7 +101,27 @@ template <typename native>
   return (native **)Alloc (sizeof(native *) * size);
 }
 
+void *operator new (uint32_t size)
+{
+	return Alloc(size);
+}
 
+template <typename Object>
+void *operator new (uint32_t size, Object object)
+{
+	return Alloc(sizeof(Object));
+}
+
+template <typename Object>
+void *operator new[] (uint32_t count, Object object)
+{
+	return Alloc(sizeof(Object) * count);
+}
+
+void operator delete (void *p)
+{
+	Free(p);
+}
 #endif /*MEMORY_TEMPLATE_CPP*/
 
 //extern Allocator RAM;
